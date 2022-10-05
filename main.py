@@ -2,7 +2,7 @@ import pygame
 from sys import exit
 
 pygame.init()
-screen = pygame.display.set_mode((800, 400))
+screen = pygame.display.set_mode((1280, 720))
 pygame.display.set_caption('Zumbi')
 clock = pygame.time.Clock()
 
