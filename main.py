@@ -18,14 +18,18 @@ class Player(pygame.sprite.Sprite):
     # Função input: Muda a direção do jogador baseado no input
     def player_input(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_w]:
+        if keys[pygame.K_w] and keys[pygame.K_s]:
+            self.direction.y = 0
+        elif keys[pygame.K_w]:
             self.direction.y = -1
         elif keys[pygame.K_s]:
             self.direction.y = 1
         else:
             self.direction.y = 0
 
-        if keys[pygame.K_a]:
+        if keys[pygame.K_a] and keys[pygame.K_d]:
+            self.direction.x = 0
+        elif keys[pygame.K_a]:
             self.direction.x = -1
         elif keys[pygame.K_d]:
             self.direction.x = 1
