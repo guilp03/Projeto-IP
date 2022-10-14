@@ -135,6 +135,11 @@ while True:
         # Muda o zoom baseado no scroll do mouse
         if event.type == pygame.MOUSEWHEEL:
             camera_group.zoom_scale += event.y * 0.03
+            if camera_group.zoom_scale > 1.84:
+                camera_group.zoom_scale = 1.84
+            if camera_group.zoom_scale < 0.94:
+                camera_group.zoom_scale = 0.94
+            print(camera_group.zoom_scale)
 
     screen.fill('#71ddee')
     camera_group.update()
@@ -142,3 +147,4 @@ while True:
 
     pygame.display.update()
     clock.tick(60)
+    
