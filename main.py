@@ -41,28 +41,32 @@ class Zumbi(pygame.sprite.Sprite):
     #definindo os dados base de um zumbi
     def __init__(self, pos, group):
         super().__init__(group)
-        self.image = pygame.image.load('zumbinho.png').convert_alpha()
-        self.rect = self.image.get_rect(topleft=pos)
-        self.passos = 0
-        self.speed = 1.5
-    #como o zumbi aparece na tela
-    def draw(self, screen):
-        self.move()  
-        if speed > 0:
-            screen.blit(self.Zombie)
-        else:
-            screen.blit(self.Zombie)
-        if speed > 0:
-            screen.blit(self.Zombie)
-        else:
-            screen.blit(self.Zombie)
+        self.image = pygame.image.load('Zumbi_Basico.png').convert_alpha()
+        self.rect = self.image.get_rect(center=pos)
+        self.direction = pygame.math.Vector2()
+        self.speed = 3.3
+        self.x_sprites_zumbi = 0
+        self.y_sprites_zumbi = 0
         #movimentacao ainda em experimentacao
-    def move(self):
-        if self.x_zumbi < 799:
-            self.x_zumbi += self.speed
+    def zombie_input(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_UP]:
+            self.direction.y = -1
+        elif keys[pygame.K_DOWN]:
+            self.direction.y = 1
         else:
-            self.speed = self.speed * -1
-            
+            self.direction.y = 0
+
+        if keys[pygame.K_LEFT]:
+            self.direction.x = -1
+        elif keys[pygame.K_RIGHT]:
+            self.direction.x = 1
+        else:
+            self.direction.x = 0
+
+    def update(self):
+        self.zombie_input()
+        self.rect.center += self.direction * self.speed 
         
 
 
