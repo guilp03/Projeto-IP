@@ -36,6 +36,34 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         self.player_input()
         self.rect.center += self.direction * self.speed
+        
+class Zumbi(pygame.sprite.Sprite):
+    #definindo os dados base de um zumbi
+    def __init__(self, pos, group):
+        super().__init__(group)
+        self.image = pygame.image.load('zumbinho.png').convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.passos = 0
+        self.speed = 1.5
+    #como o zumbi aparece na tela
+    def draw(self, screen):
+        self.move()  
+        if speed > 0:
+            screen.blit(self.Zombie)
+        else:
+            screen.blit(self.Zombie)
+        if speed > 0:
+            screen.blit(self.Zombie)
+        else:
+            screen.blit(self.Zombie)
+        #movimentacao ainda em experimentacao
+    def move(self):
+        if self.x_zumbi < 799:
+            self.x_zumbi += self.speed
+        else:
+            self.speed = self.speed * -1
+            
+        
 
 
 class Car(pygame.sprite.Sprite):
@@ -121,6 +149,10 @@ camera_group = CameraGroup()
 # determina posição inicial do jogador e a que grupo pertence
 player = Player((640, 360), camera_group)
 
+#cria o zumbi
+spawn_zumbi_x = randint(0,700)
+spawn_zumbi_y = randint(0,600)
+zumbi = Zumbi((spawn_zumbi_x, spawn_zumbi_y), camera_group)
 # Criar 5 carror em posições aletorias (Feito para teste)
 for i in range(5):
     random_x = randint(0, 500)
