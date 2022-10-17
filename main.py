@@ -1,6 +1,6 @@
 import pygame
+from support import import_folder
 from random import randint
-
 
 class Player(pygame.sprite.Sprite):
     """'Classe Player: Determina o sprite do jogador, sua velocidade, direção e atualiza sua posição'"""
@@ -41,32 +41,64 @@ class Zumbi(pygame.sprite.Sprite):
     #definindo os dados base de um zumbi
     def __init__(self, pos, group):
         super().__init__(group)
-        self.image = pygame.image.load('Zumbi_Basico.png').convert_alpha()
+        self.image = pygame.image.load('down_0.png').convert_alpha()
         self.rect = self.image.get_rect(center=pos)
         self.direction = pygame.math.Vector2()
         self.speed = 3.3
+        self.status = 'down'
         self.x_sprites_zumbi = 0
         self.y_sprites_zumbi = 0
+        self.frame_index = 0
+        self.animation_speed = 0.15
+        self.importar()
         #movimentacao ainda em experimentacao
     def zombie_input(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]:
             self.direction.y = -1
+            self.status = 'up'
         elif keys[pygame.K_DOWN]:
             self.direction.y = 1
+            self.status = 'down'
         else:
-            self.direction.y = 0
-
+            self.direction.y = -1
         if keys[pygame.K_LEFT]:
             self.direction.x = -1
+            self.status = 'left'
         elif keys[pygame.K_RIGHT]:
             self.direction.x = 1
+            self.status = 'right'
         else:
             self.direction.x = 0
-
+    def get_status(self):
+        if self.direction.x == 0 and self.direction.y == 0:
+            if not 'idle' in self.status:
+                self.status = self.status + '_idle'
+              
+    def importar(self):
+        zombie_path = '../graphics/player/'
+        self.animations = {'up': [], 'down': [], 
+                           'left': [], 'right': [], 
+                           'up_idle': [], 'down_idle': [], 
+                           'left_idle': [], 'right_idle': []}
+        for animation in self.animations.keys():
+            full_path = zombie_path + animation
+            self.animations[animation] = import_folder(full_path)
+            
+    def animar(self):
+        animation = self.animations[self.status]
+        
+        self.frame_index += self.animation_speed
+        if self.frame_index >= len(animation):
+            self.frame_index = 0
+        
+        self.image = animation[int(self.frame_index)]
+        self.rect = self.get_rect(center = self.pos)
     def update(self):
         self.zombie_input()
         self.rect.center += self.direction * self.speed 
+        self.get_status()
+        self.animar()
         
 
 
