@@ -92,7 +92,7 @@ class CameraGroup(pygame.sprite.Group):
     def custom_draw(self, player):
         # Centraliza a camera no jogador
         self.center_camera(player)
-        self.internal_surface.fill('#71ddee')
+        self.internal_surface.fill('#808080')
 
         # Reposiciona o chão levando em conta o zoom e o personagem
         ground_offset = self.ground_rect.topleft - self.offset + self.internal_offset
@@ -136,7 +136,7 @@ while True:
         if event.type == pygame.MOUSEWHEEL:
             camera_group.zoom_scale += event.y * 0.03
 
-    screen.fill('#71ddee')
+    screen.fill('#808080')
     camera_group.update()
     camera_group.custom_draw(player)
 
