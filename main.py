@@ -137,7 +137,8 @@ while True:
             camera_group.zoom_scale += event.y * 0.03
         # FAZ ALGUMA COISA QUANDO APERTA O BOTAO DO MOUSE
         if event.type == pygame.MOUSEBUTTONDOWN:
-            aim = pygame.draw.line((camera_group.display_surface),(0,0,0),(player.rect.centerx,player.rect.centery),pygame.mouse.get_pos(),50)
+            aim = pygame.draw.line((camera_group.display_surface),(255,255,255),(player.rect.centerx,player.rect.centery),pygame.mouse.get_pos(),200)
+            #blit alguma COISA
 
     screen.fill('#808080')
     camera_group.update()
