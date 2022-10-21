@@ -74,8 +74,8 @@ class Zumbi(pygame.sprite.Sprite):
                 self.status = self.status + '_idle'
               
     def importar(self):
-        self.animations = {'up': ['up_0.png', 'up_1.png', 'up_2.png', 'up_3.png'], 'down': ['down_0.png', 'down_1.png', 'down_2.png', 'down_3.png'], 
-                           'left': ['left_0.png', 'left_1.png', 'left_2.png', 'left_3.png'], 'right': ['right_0.png', 'right_1.png', 'right_2.png', 'right_3.png'], 
+        self.animations = {'up': ['up_0.png', 'up_1.png', 'up_2.png'], 'down': ['down_0.png', 'down_1.png', 'down_2.png'], 
+                           'left': ['left_0.png', 'left_1.png', 'left_2.png'], 'right': ['right_0.png', 'right_1.png', 'right_2.png'], 
                            'up_idle': ['idle_up.png'], 'down_idle': ['idle_down.png'], 
                            'left_idle': ['idle_left.png'], 'right_idle': ['idle_right.png']}
             
