@@ -37,6 +37,18 @@ class Player(pygame.sprite.Sprite):
         self.player_input()
         self.rect.center += self.direction * self.speed
 
+class ProjetilMira:
+    """'CLASSE PRARA IMPLEMENTAR A MIRA E O PROJETIL QUE VAI SER DISPARADO PELA ARMA'"""
+    def __init__(self, pos, group):
+        super().__init__(group)
+        # 
+        self.image = pygame.image.load('MIRA_resized.png').convert_alpha()
+        # 
+        self.rect = self.image.get_rect(center=pos)
+    
+    # ATUALIZA A POSIÇÃO PRA POSIÇÃO DO MOUSE
+    def update(self):
+        self.rect.center = pygame.mouse.get_pos()
 
 class Car(pygame.sprite.Sprite):
     """"'Classe Carro: Determina sprite e posição do carro'"""
@@ -120,7 +132,7 @@ clock = pygame.time.Clock()
 camera_group = CameraGroup()
 # determina posição inicial do jogador e a que grupo pertence
 player = Player((640, 360), camera_group)
-
+mira = ProjetilMira((640,360), camera_group)
 # Criar 5 carror em posições aletorias (Feito para teste)
 for i in range(5):
     random_x = randint(0, 500)
@@ -135,10 +147,6 @@ while True:
         # Muda o zoom baseado no scroll do mouse
         if event.type == pygame.MOUSEWHEEL:
             camera_group.zoom_scale += event.y * 0.03
-        # FAZ ALGUMA COISA QUANDO APERTA O BOTAO DO MOUSE
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            aim = pygame.draw.line((camera_group.display_surface),(255,255,255),(player.rect.centerx,player.rect.centery),pygame.mouse.get_pos(),200)
-            #blit alguma COISA
 
     screen.fill('#808080')
     camera_group.update()
