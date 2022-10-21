@@ -15,7 +15,7 @@ class Player(pygame.sprite.Sprite):
         self.speed = 3
         self.status = 'down'
         self.frame_index = 0
-        self.dano = True
+        self.dano = False
         self.animation_speed = 0.15
         self.importar()
 
