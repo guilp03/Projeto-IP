@@ -46,8 +46,8 @@ class Player(pygame.sprite.Sprite):
     def importar(self):
         self.animations = {'up': ['prota_up_0.png', 'prota_up_1.png', 'prota_up_2.png'], 'down': ['prota_down_0.png', 'prota_down_1.png', 'prota_down_2.png'], 
                            'left': ['prota_left_0.png', 'prota_left_1.png', 'prota_left_2.png'], 'right': ['prota_right_0.png', 'prota_right_1.png', 'prota_right_2.png'], 
-                           'up_idle': ['prota_idle_up.png'], 'prota_down_idle': ['prota_idle_down.png'], 
-                           'left_idle': ['prota_idle_left.png'], 'prota_right_idle': ['prota_idle_right.png']}
+                           'up_idle': ['prota_idle_up.png'], 'down_idle': ['prota_idle_down.png'], 
+                           'left_idle': ['prota_idle_left.png'], 'right_idle': ['prota_idle_right.png']}
     
     def animar(self):
         animation = self.animations[self.status]
