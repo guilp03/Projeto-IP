@@ -73,25 +73,27 @@ class Zumbi(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=pos)
         self.direction = pygame.math.Vector2()
         self.speed = 3.3
+        self.hitbox = self.rect.inflate(0,-10)
         self.status = 'down'
         self.frame_index = 0
         self.animation_speed = 0.15
         self.importar()
         #movimentacao ainda em experimentacao
-    def zombie_input(self):
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_UP]:
+    def zombie_move(self): 
+        player_vec = pygame.math.Vector2(player.rect.center)
+        center = (640, 360)
+        if self.direction.y > 360:
             self.direction.y = -1
             self.status = 'up'
-        elif keys[pygame.K_DOWN]:
+        elif self.direction.y < 360:
             self.direction.y = 1
             self.status = 'down'
         else:
             self.direction.y = 0
-        if keys[pygame.K_LEFT]:
+        if self.direction.x > 640:
             self.direction.x = -1
             self.status = 'left'
-        elif keys[pygame.K_RIGHT]:
+        elif self.direction.x < 640:
             self.direction.x = 1
             self.status = 'right'
         else:
@@ -100,7 +102,8 @@ class Zumbi(pygame.sprite.Sprite):
         if self.direction.x == 0 and self.direction.y == 0:
             if not 'idle' in self.status:
                 self.status = self.status + '_idle'
-              
+                
+        
     def importar(self):
         self.animations = {'up': ['up_0.png', 'up_1.png', 'up_2.png'], 'down': ['down_0.png', 'down_1.png', 'down_2.png'], 
                            'left': ['left_0.png', 'left_1.png', 'left_2.png'], 'right': ['right_0.png', 'right_1.png', 'right_2.png'], 
@@ -116,7 +119,7 @@ class Zumbi(pygame.sprite.Sprite):
         
         self.image = pygame.image.load(animation[int(self.frame_index)]).convert_alpha()
     def update(self):
-        self.zombie_input()
+        self.zombie_move()
         self.rect.center += self.direction * self.speed 
         self.get_status()
         self.animar()
