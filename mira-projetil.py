@@ -65,6 +65,7 @@ while True:
             pygame.QUIT
         
         # QUANDO APERTA O BOTÃO 1 DO MOUSE DISPARA A BALA
+        # JOAAAAAAAAAO
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 player_bullets.append(PlayerBullet(player.x, player.y, mouse_x, mouse_y))
