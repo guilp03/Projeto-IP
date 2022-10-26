@@ -15,16 +15,12 @@ class Player(pygame.sprite.Sprite):
         self.speed = 3
         self.status = 'down'
         self.frame_index = 0
-        self.dano = True
+        self.dano = False
         self.animation_speed = 0.15
         self.importar()
 
     # Função input: Muda a direção do jogador baseado no input
-    def dano_player(self):
-        self.zumbi =  Zumbi((spawn_zumbi_x, spawn_zumbi_y), camera_group)
-        if self.direction.x == self.zumbi.direction_zumbi.x and self.direction.y == self.zumbi.direction_zumbi.y: 
-            self.dano = True
-            print(self.dano)
+    
     def player_input(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w]:
@@ -152,6 +148,20 @@ class Car(pygame.sprite.Sprite):
         # Determinando posição inicial
         self.rect = self.image.get_rect(topleft=pos)
 
+class Coletaveis(pygame.sprite.Sprite):
+    """"'Classe Coletaveis'"""
+    def __init__(self, pos, group):
+        # Inserindo objeto no grupo camera
+        super().__init__(group)
+        # Determinando sprite
+        self.image = pygame.image.load('medkit.png').convert_alpha()
+        # Determinando posição inicial
+        self.rect = self.image.get_rect(topleft=pos)
+
+        self.coleta = [
+            pygame.Rect(random_xx, random_yy, 20, 20)
+        ]
+      
 
 class CameraGroup(pygame.sprite.Group):
     """"'Classe Camera: Especifica o funcionamento da camera (Centraliza a camera no personagem, estabelece o zoom e determina que objeto está na frente)'"""
@@ -234,6 +244,11 @@ for i in range(5):
     random_x = randint(0, 500)
     random_y = randint(0, 500)
     Car((random_x, random_y), camera_group)
+
+for i in range(5):
+    random_xx = randint(0, 500)
+    random_yy = randint(0, 500)
+    Coletaveis((random_xx, random_yy), camera_group)
 
 while True:
     for event in pygame.event.get():
