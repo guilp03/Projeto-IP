@@ -1,5 +1,6 @@
 import pygame
 from random import randint
+import math
 
 
 class Player(pygame.sprite.Sprite):
@@ -20,15 +21,23 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w]:
             self.direction.y = -1
+            for disparo in disparo_jogador:
+                disparo.y += 1
         elif keys[pygame.K_s]:
             self.direction.y = 1
+            for disparo in disparo_jogador:
+                disparo.y -= 1
         else:
             self.direction.y = 0
 
         if keys[pygame.K_a]:
             self.direction.x = -1
+            for disparo in disparo_jogador:
+                disparo.x += 1
         elif keys[pygame.K_d]:
             self.direction.x = 1
+            for disparo in disparo_jogador:
+                disparo.y -= 1
         else:
             self.direction.x = 0
 
@@ -37,18 +46,30 @@ class Player(pygame.sprite.Sprite):
         self.player_input()
         self.rect.center += self.direction * self.speed
 
-class ProjetilMira:
-    """'CLASSE PRARA IMPLEMENTAR A MIRA E O PROJETIL QUE VAI SER DISPARADO PELA ARMA'"""
-    def __init__(self, pos, group):
+class DisparoArma:
+    """'CLASSE PRARA IMPLEMENTAR O PROJETIL QUE VAI SER DISPARADO PELA ARMA'"""
+    def __init__(self,x,y,mouse_x,mouse_y,group,pos):
+        #COLOCA A CLASSE NO CAMERAGROUP
         super().__init__(group)
         # 
-        self.image = pygame.image.load('MIRA_resized.png').convert_alpha()
-        # 
         self.rect = self.image.get_rect(center=pos)
+        # Dando corpo ao disparo'
+        self.x = x
+        self.x = y
+        self.mouse_x = mouse_x
+        self.mouse_y = mouse_y
+        self.speed = 15
+        #Matemática necessária para isolar o X e Y pra utilizar na bala
+        self.angulo = math.atan(y-mouse_y, x-mouse_x)
+        self.x_vel = math.cos(self.angulo) * self.speed
+        self.y_vel = math.sin(self.angulo) * self.speed   
+
+    def main(self,display):
+        #Função para realiar a movimentação do personagem
+        self.x -= int(self.x_vel)
+        self.y -= int(self.y_vel)
+        pygame.draw.circle(display, '#f3d300', (self.x,self.y), 5)
     
-    # ATUALIZA A POSIÇÃO PRA POSIÇÃO DO MOUSE
-    def update(self):
-        self.rect.center = pygame.mouse.get_pos()
 
 class Car(pygame.sprite.Sprite):
     """"'Classe Carro: Determina sprite e posição do carro'"""
@@ -132,14 +153,19 @@ clock = pygame.time.Clock()
 camera_group = CameraGroup()
 # determina posição inicial do jogador e a que grupo pertence
 player = Player((640, 360), camera_group)
-mira = ProjetilMira((640,360), camera_group)
 # Criar 5 carror em posições aletorias (Feito para teste)
 for i in range(5):
     random_x = randint(0, 500)
     random_y = randint(0, 500)
     Car((random_x, random_y), camera_group)
+# Cooredenadas jogador
+player_x, player_y = 640, 360
+
+disparo_jogador = []
 
 while True:
+    mouse_x, mouse_y = pygame.mouse.get_pos()
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -147,7 +173,13 @@ while True:
         # Muda o zoom baseado no scroll do mouse
         if event.type == pygame.MOUSEWHEEL:
             camera_group.zoom_scale += event.y * 0.03
+        # Disparo da bala
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                disparo_jogador.append(DisparoArma(player_x, player_y, mouse_x, mouse_y,camera_group))
 
+    for disparo in disparo_jogador:
+        disparo.main(camera_group)
     screen.fill('#808080')
     camera_group.update()
     camera_group.custom_draw(player) 

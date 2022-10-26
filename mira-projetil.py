@@ -43,7 +43,7 @@ class PlayerBullet:
         self.x -= int(self.x_vel)
         self.y -= int(self.y_vel)
 
-        pygame.draw.circle(display, '#000000', (self.x, self.y), 5)
+        pygame.draw.circle(display, '#f3d300', (self.x, self.y), 5)
 
 #define Posição e tamanho do jogador
 player = Player(int(lar/2), int(alt/2),64,64)
