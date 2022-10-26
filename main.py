@@ -48,11 +48,11 @@ class Player(pygame.sprite.Sprite):
 
 class DisparoArma:
     """'CLASSE PRARA IMPLEMENTAR O PROJETIL QUE VAI SER DISPARADO PELA ARMA'"""
-    def __init__(self,x,y,mouse_x,mouse_y,group,pos):
+    def __init__(self,x,y,mouse_x,mouse_y,group):
         #COLOCA A CLASSE NO CAMERAGROUP
         super().__init__(group)
         # 
-        self.rect = self.image.get_rect(center=pos)
+        self.rect = self.image.get_rect()
         # Dando corpo ao disparo'
         self.x = x
         self.x = y
@@ -176,10 +176,12 @@ while True:
         # Disparo da bala
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
-                disparo_jogador.append(DisparoArma(player_x, player_y, mouse_x, mouse_y,camera_group))
+                disparo_jogador.append(DisparoArma(player.rect.centerx, player.rect.centerx, mouse_x, mouse_y,camera_group))
 
     for disparo in disparo_jogador:
-        disparo.main(camera_group)
+        disparo.main(screen)
+
+    
     screen.fill('#808080')
     camera_group.update()
     camera_group.custom_draw(player) 
