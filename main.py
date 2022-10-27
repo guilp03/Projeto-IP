@@ -38,8 +38,6 @@ class Player(pygame.sprite.Sprite):
             self.status = 'right'
         else:
             self.direction.x = 0
-    def get_position(self):
-        return self.rect.center
     def get_status(self):
         if self.direction.x == 0 and self.direction.y == 0:
             if not 'idle' in self.status:
@@ -82,24 +80,20 @@ class Zumbi(pygame.sprite.Sprite):
         self.importar()
         #movimentacao ainda em experimentacao
     def zombie_move(self): 
-        if self.direction.y > self.player.rect.y:
+        if self.rect.y > self.player.rect.y:
             self.direction.y = -1
             self.status = 'up'
-            print('up')
-        elif self.direction.y < self.player.rect.y:
+        elif self.rect.y < self.player.rect.y:
             self.direction.y = 1
             self.status = 'down'
-            print('down')
         else:
             self.direction.y = 0
-        if self.direction.x > self.player.rect.x:
+        if self.rect.x > self.player.rect.x:
             self.direction.x = -1
             self.status = 'left'
-            print('left')
-        elif self.direction.x < self.player.rect.x:
+        elif self.rect.x < self.player.rect.x:
             self.direction.x = 1
             self.status = 'right'
-            print('right')
         else:
             self.direction.x = 0
     def get_status(self):
