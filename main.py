@@ -82,21 +82,24 @@ class Zumbi(pygame.sprite.Sprite):
         self.importar()
         #movimentacao ainda em experimentacao
     def zombie_move(self): 
-        player_vec = pygame.math.Vector2(player.rect.center)
         if self.direction.y > self.player.rect.y:
             self.direction.y = -1
             self.status = 'up'
+            print('up')
         elif self.direction.y < self.player.rect.y:
             self.direction.y = 1
             self.status = 'down'
+            print('down')
         else:
             self.direction.y = 0
         if self.direction.x > self.player.rect.x:
             self.direction.x = -1
             self.status = 'left'
+            print('left')
         elif self.direction.x < self.player.rect.x:
             self.direction.x = 1
             self.status = 'right'
+            print('right')
         else:
             self.direction.x = 0
     def get_status(self):
