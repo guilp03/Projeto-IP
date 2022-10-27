@@ -63,20 +63,22 @@ class Player(pygame.sprite.Sprite):
         self.rect.center += self.direction * self.speed
         self.get_status()
         self.animar()
-        
+zombies = {'normal': {'hp': 40, 'speed': 1.5, 'animation_speed': 0.15}, 'zumbinho': {'hp': 40, 'speed': 2.5, 'animation_speed': 0.2}, 'boomer': {'hp': 40, 'speed': 1, 'animation_speed': 0.1 }  }   
 class Zumbi(pygame.sprite.Sprite):
     #definindo os dados base de um zumbi
-    def __init__(self, pos, group, player):
+    def __init__(self,tipo_zumbi, pos, group, player):
         super().__init__(group)
+        self.tipo_zumbi = tipo_zumbi
+        infos = zombies[self.tipo_zumbi]
+        self.hp = infos['hp']
         self.player = player
-        self.image = pygame.image.load('down_0.png').convert_alpha()
+        self.image = pygame.image.load(f'{self.tipo_zumbi}_down_0.png').convert_alpha()
         self.rect = self.image.get_rect(center=pos)
         self.direction = pygame.math.Vector2()
-        self.speed = 1.5
-        self.hitbox = self.rect.inflate(0,-10)
+        self.speed = infos['speed']
         self.status = 'down'
         self.frame_index = 0
-        self.animation_speed = 0.15
+        self.animation_speed = infos['animation_speed']
         self.importar()
         #movimentacao ainda em experimentacao
     def zombie_move(self): 
@@ -103,10 +105,21 @@ class Zumbi(pygame.sprite.Sprite):
                 
         
     def importar(self):
-        self.animations = {'up': ['up_0.png', 'up_1.png', 'up_2.png'], 'down': ['down_0.png', 'down_1.png', 'down_2.png'], 
-                           'left': ['left_0.png', 'left_1.png', 'left_2.png'], 'right': ['right_0.png', 'right_1.png', 'right_2.png'], 
-                           'up_idle': ['idle_up.png'], 'down_idle': ['idle_down.png'], 
-                           'left_idle': ['idle_left.png'], 'right_idle': ['idle_right.png']}
+        if self.tipo_zumbi == 'boomer':
+            self.animations = {'up': ['boomer_up_0.png', 'boomer_up_1.png', 'boomer_up_2.png'], 'down': ['boomer_down_0.png', 'boomer_down_1.png', 'boomer_down_2.png'], 
+                            'left': ['boomer_left_0.png', 'boomer_left_1.png', 'boomer_left_2.png'], 'right': ['boomer_right_0.png', 'boomer_right_1.png', 'boomer_right_2.png'], 
+                            'up_idle': ['boomer_idle_up.png'], 'down_idle': ['boomer_idle_down.png'], 
+                            'left_idle': ['boomer_idle_left.png'], 'right_idle': ['boomer_idle_right.png']}
+        elif self.tipo_zumbi == 'normal':
+            self.animations = {'up': ['normal_up_0.png', 'normal_up_1.png', 'normal_up_2.png'], 'down': ['normal_down_0.png', 'normal_down_1.png', 'normal_down_2.png'], 
+                            'left': ['normal_left_0.png', 'normal_left_1.png', 'normal_left_2.png'], 'right': ['normal_right_0.png', 'normal_right_1.png', 'normal_right_2.png'], 
+                            'up_idle': ['normal_idle_up.png'], 'down_idle': ['normal_idle_down.png'], 
+                            'left_idle': ['normal_idle_left.png'], 'right_idle': ['normal_idle_right.png']}
+        elif self.tipo_zumbi == 'zumbinho':
+            self.animations = {'up': ['zumbinho_up_0.png', 'zumbinho_up_1.png', 'zumbinho_up_2.png'], 'down': ['zumbinho_down_0.png', 'zumbinho_down_1.png', 'zumbinho_down_2.png'], 
+                            'left': ['zumbinho_left_0.png', 'zumbinho_left_1.png', 'zumbinho_left_2.png'], 'right': ['zumbinho_right_0.png', 'zumbinho_right_1.png', 'zumbinho_right_2.png'], 
+                            'up_idle': ['zumbinho_idle_up.png'], 'down_idle': ['zumbinho_idle_down.png'], 
+                            'left_idle': ['zumbinho_idle_left.png'], 'right_idle': ['zumbinho_idle_right.png']}
             
     def animar(self):
         animation = self.animations[self.status]
@@ -210,7 +223,11 @@ player = Player((640, 360), camera_group)
 #cria o zumbi
 spawn_zumbi_x = randint(0,700)
 spawn_zumbi_y = randint(0,600)
-zumbi = Zumbi((spawn_zumbi_x, spawn_zumbi_y), camera_group, player)
+zumbi = Zumbi('normal',(spawn_zumbi_x, spawn_zumbi_y), camera_group, player)
+zumbi_2 = Zumbi('boomer',(spawn_zumbi_x, spawn_zumbi_y), camera_group, player)
+zumbi_3 = Zumbi('zumbinho',(spawn_zumbi_x, spawn_zumbi_y), camera_group, player)
+
+
 # Criar 5 carror em posições aletorias (Feito para teste)
 for i in range(5):
     random_x = randint(0, 500)
