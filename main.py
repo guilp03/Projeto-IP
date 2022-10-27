@@ -15,7 +15,7 @@ class Player(pygame.sprite.Sprite):
         self.speed = 3
         self.status = 'down'
         self.frame_index = 0
-        self.animation_speed = 0.15
+        self.animation_speed = 0.2
         self.importar()
 
     # Função input: Muda a direção do jogador baseado no input
@@ -38,7 +38,8 @@ class Player(pygame.sprite.Sprite):
             self.status = 'right'
         else:
             self.direction.x = 0
-    
+    def get_position(self):
+        return self.rect.center
     def get_status(self):
         if self.direction.x == 0 and self.direction.y == 0:
             if not 'idle' in self.status:
@@ -67,12 +68,13 @@ class Player(pygame.sprite.Sprite):
         
 class Zumbi(pygame.sprite.Sprite):
     #definindo os dados base de um zumbi
-    def __init__(self, pos, group):
+    def __init__(self, pos, group, player):
         super().__init__(group)
+        self.player = player
         self.image = pygame.image.load('down_0.png').convert_alpha()
         self.rect = self.image.get_rect(center=pos)
         self.direction = pygame.math.Vector2()
-        self.speed = 3.3
+        self.speed = 1.5
         self.hitbox = self.rect.inflate(0,-10)
         self.status = 'down'
         self.frame_index = 0
@@ -81,19 +83,18 @@ class Zumbi(pygame.sprite.Sprite):
         #movimentacao ainda em experimentacao
     def zombie_move(self): 
         player_vec = pygame.math.Vector2(player.rect.center)
-        center = (640, 360)
-        if self.direction.y > 360:
+        if self.direction.y > self.player.rect.y:
             self.direction.y = -1
             self.status = 'up'
-        elif self.direction.y < 360:
+        elif self.direction.y < self.player.rect.y:
             self.direction.y = 1
             self.status = 'down'
         else:
             self.direction.y = 0
-        if self.direction.x > 640:
+        if self.direction.x > self.player.rect.x:
             self.direction.x = -1
             self.status = 'left'
-        elif self.direction.x < 640:
+        elif self.direction.x < self.player.rect.x:
             self.direction.x = 1
             self.status = 'right'
         else:
@@ -212,7 +213,7 @@ player = Player((640, 360), camera_group)
 #cria o zumbi
 spawn_zumbi_x = randint(0,700)
 spawn_zumbi_y = randint(0,600)
-zumbi = Zumbi((spawn_zumbi_x, spawn_zumbi_y), camera_group)
+zumbi = Zumbi((spawn_zumbi_x, spawn_zumbi_y), camera_group, player)
 # Criar 5 carror em posições aletorias (Feito para teste)
 for i in range(5):
     random_x = randint(0, 500)
