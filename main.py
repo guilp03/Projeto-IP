@@ -63,6 +63,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.center += self.direction * self.speed
         self.get_status()
         self.animar()
+zumbis = ['normal', 'zumbinho', 'boomer']
 zombies = {'normal': {'hp': 40, 'speed': 1.5, 'animation_speed': 0.15}, 'zumbinho': {'hp': 40, 'speed': 2.5, 'animation_speed': 0.2}, 'boomer': {'hp': 40, 'speed': 1, 'animation_speed': 0.1 }  }   
 class Zumbi(pygame.sprite.Sprite):
     #definindo os dados base de um zumbi
