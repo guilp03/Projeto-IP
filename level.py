@@ -15,6 +15,7 @@ class Level:
 		# sprite group setup
 		self.visible_sprites = CameraGroup()
 		self.obstacle_sprites = pygame.sprite.Group()
+		self.lista_coletaveis = pygame.sprite.Group()
 
 		# sprite setup
 		self.create_map()
