@@ -11,24 +11,55 @@ class Player(pygame.sprite.Sprite):
 		self.direction = pygame.math.Vector2()
 		self.speed = 5
 
+		self.status = 'down'
+		self.frame_index = 0
+		self.animation_speed = 0.2
+		self.importar()
+
 		self.obstacle_sprites = obstacle_sprites
 
 	def input(self):
 		keys = pygame.key.get_pressed()
-
 		if keys[pygame.K_w]:
 			self.direction.y = -1
+			self.status = 'up'
 		elif keys[pygame.K_s]:
 			self.direction.y = 1
+			self.status = 'down'
 		else:
 			self.direction.y = 0
 
-		if keys[pygame.K_d]:
-			self.direction.x = 1
-		elif keys[pygame.K_a]:
+		if keys[pygame.K_a]:
 			self.direction.x = -1
+			self.status = 'left'
+		elif keys[pygame.K_d]:
+			self.direction.x = 1
+			self.status = 'right'
 		else:
 			self.direction.x = 0
+
+	def get_status(self):
+		if self.direction.x == 0 and self.direction.y == 0:
+			if not 'idle' in self.status:
+				self.status = self.status + '_idle'
+
+	def importar(self):
+		self.animations = {'up': ['prota_up_0.png', 'prota_up_1.png', 'prota_up_2.png'],
+							'down': ['prota_down_0.png', 'prota_down_1.png', 'prota_down_2.png'],
+							'left': ['prota_left_0.png', 'prota_left_1.png', 'prota_left_2.png'],
+							'right': ['prota_right_0.png', 'prota_right_1.png', 'prota_right_2.png'],
+							'up_idle': ['prota_idle_up.png'], 'down_idle': ['prota_idle_down.png'],
+							'left_idle': ['prota_idle_left.png'], 'right_idle': ['prota_idle_right.png']}
+	
+	def animar(self):
+		path = '../prota/'
+		animation = (f'{path}{self.animations[self.status]}')
+
+		self.frame_index += self.animation_speed
+		if self.frame_index >= len(animation):
+			self.frame_index = 0
+
+		self.image = pygame.image.load(animation[int(self.frame_index)]).convert_alpha()
 
 	def move(self,speed):
 		if self.direction.magnitude() != 0:
@@ -61,3 +92,5 @@ class Player(pygame.sprite.Sprite):
 	def update(self):
 		self.input()
 		self.move(self.speed)
+		self.get_status()
+		self.animar()
