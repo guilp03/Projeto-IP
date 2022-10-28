@@ -4,7 +4,7 @@ from mapa import *
 class Player(pygame.sprite.Sprite):
 	def __init__(self,pos,groups,obstacle_sprites):
 		super().__init__(groups)
-		self.image = pygame.image.load('Protagonista.png').convert_alpha()
+		self.image = pygame.image.load('../Projeto-IP/prota/prota_idle_down.png').convert_alpha()
 		self.rect = self.image.get_rect(topleft = pos)
 		self.hitbox = self.rect.inflate(0,-10)
 
@@ -37,6 +37,7 @@ class Player(pygame.sprite.Sprite):
 			self.status = 'right'
 		else:
 			self.direction.x = 0
+		
 
 	def get_status(self):
 		if self.direction.x == 0 and self.direction.y == 0:
@@ -44,16 +45,15 @@ class Player(pygame.sprite.Sprite):
 				self.status = self.status + '_idle'
 
 	def importar(self):
-		self.animations = {'up': ['prota_up_0.png', 'prota_up_1.png', 'prota_up_2.png'],
-							'down': ['prota_down_0.png', 'prota_down_1.png', 'prota_down_2.png'],
-							'left': ['prota_left_0.png', 'prota_left_1.png', 'prota_left_2.png'],
-							'right': ['prota_right_0.png', 'prota_right_1.png', 'prota_right_2.png'],
-							'up_idle': ['prota_idle_up.png'], 'down_idle': ['prota_idle_down.png'],
-							'left_idle': ['prota_idle_left.png'], 'right_idle': ['prota_idle_right.png']}
+		self.animations = {'up': ['../Projeto-IP/prota/prota_up_0.png', '../Projeto-IP/prota/prota_up_1.png', '../Projeto-IP/prota/prota_up_2.png'],
+							'down': ['../Projeto-IP/prota/prota_down_0.png', '../Projeto-IP/prota/prota_down_1.png', '../Projeto-IP/prota/prota_down_2.png'],
+							'left': ['../Projeto-IP/prota/prota_left_0.png', '../Projeto-IP/prota/prota_left_1.png', '../Projeto-IP/prota/prota_left_2.png'],
+							'right': ['../Projeto-IP/prota/prota_right_0.png', '../Projeto-IP/prota/prota_right_1.png', '../Projeto-IP/prota/prota_right_2.png'],
+							'up_idle': ['../Projeto-IP/prota/prota_idle_up.png'], 'down_idle': ['../Projeto-IP/prota/prota_idle_down.png'],
+							'left_idle': ['../Projeto-IP/prota/prota_idle_left.png'], 'right_idle': ['../Projeto-IP/prota/prota_idle_right.png']}
 	
 	def animar(self):
-		path = '../prota/'
-		animation = (f'{path}{self.animations[self.status]}')
+		animation = self.animations[self.status]
 
 		self.frame_index += self.animation_speed
 		if self.frame_index >= len(animation):
