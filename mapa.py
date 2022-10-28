@@ -1,3 +1,4 @@
+
 # game setup
 FPS      = 60
 TILESIZE = 64
