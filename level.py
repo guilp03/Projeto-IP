@@ -4,6 +4,7 @@ from mapa import *
 from tile import Tile
 from Player import Player
 import zumbi
+from coletaveis import Coletaveis
 
 class Level:
 	def __init__(self):
@@ -29,7 +30,8 @@ class Level:
 					self.player = Player((x,y),[self.visible_sprites],self.obstacle_sprites)
 				if col == 'z':
 					self.zumbi = zumbi.Zumbi('boomer',(x,y),[self.visible_sprites],self.player,self.obstacle_sprites)
-
+				if col == 'c':
+					Coletaveis((x,y),[self.visible_sprites],self.obstacle_sprites)
 	def run(self):
 		# update and draw the game
 		self.visible_sprites.custom_draw(self.player)
