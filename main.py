@@ -1,7 +1,5 @@
 import pygame
 from random import randint
-import math
-
 
 class Player(pygame.sprite.Sprite):
     """'Classe Player: Determina o sprite do jogador, sua velocidade, direção e atualiza sua posição'"""
@@ -15,61 +13,118 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2()
         # Velocidade inicial do jogador
         self.speed = 3
+        self.status = 'down'
+        self.frame_index = 0
+        self.animation_speed = 0.15
+        self.importar()
 
     # Função input: Muda a direção do jogador baseado no input
     def player_input(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w]:
             self.direction.y = -1
-            for disparo in disparo_jogador:
-                disparo.y += 1
+            self.status = 'up'
         elif keys[pygame.K_s]:
             self.direction.y = 1
-            for disparo in disparo_jogador:
-                disparo.y -= 1
+            self.status = 'down'
         else:
             self.direction.y = 0
 
         if keys[pygame.K_a]:
             self.direction.x = -1
-            for disparo in disparo_jogador:
-                disparo.x += 1
+            self.status = 'left'
         elif keys[pygame.K_d]:
             self.direction.x = 1
-            for disparo in disparo_jogador:
-                disparo.y -= 1
+            self.status = 'right'
         else:
             self.direction.x = 0
+    
+    def get_status(self):
+        if self.direction.x == 0 and self.direction.y == 0:
+            if not 'idle' in self.status:
+                self.status = self.status + '_idle'
+    def importar(self):
+        self.animations = {'up': ['prota_up_0.png', 'prota_up_1.png', 'prota_up_2.png'], 'down': ['prota_down_0.png', 'prota_down_1.png', 'prota_down_2.png'], 
+                           'left': ['prota_left_0.png', 'prota_left_1.png', 'prota_left_2.png'], 'right': ['prota_right_0.png', 'prota_right_1.png', 'prota_right_2.png'], 
+                           'up_idle': ['prota_idle_up.png'], 'down_idle': ['prota_idle_down.png'], 
+                           'left_idle': ['prota_idle_left.png'], 'right_idle': ['prota_idle_right.png']}
+    
+    def animar(self):
+        animation = self.animations[self.status]
+        
+        self.frame_index += self.animation_speed
+        if self.frame_index >= len(animation):
+            self.frame_index = 0
+        
+        self.image = pygame.image.load(animation[int(self.frame_index)]).convert_alpha()
 
     # Função update: Movimenta o personagem baseado na direção e velocidade
     def update(self):
         self.player_input()
         self.rect.center += self.direction * self.speed
-
-class DisparoArma:
-    """'CLASSE PRARA IMPLEMENTAR O PROJETIL QUE VAI SER DISPARADO PELA ARMA'"""
-    def __init__(self,x,y,mouse_x,mouse_y,group):
-        #COLOCA A CLASSE NO CAMERAGROUP
+        self.get_status()
+        self.animar()
+        
+class Zumbi(pygame.sprite.Sprite):
+    #definindo os dados base de um zumbi
+    def __init__(self, pos, group):
         super().__init__(group)
-        # 
-        self.rect = self.image.get_rect()
-        # Dando corpo ao disparo'
-        self.x = x
-        self.x = y
-        self.mouse_x = mouse_x
-        self.mouse_y = mouse_y
-        self.speed = 15
-        #Matemática necessária para isolar o X e Y pra utilizar na bala
-        self.angulo = math.atan(y-mouse_y, x-mouse_x)
-        self.x_vel = math.cos(self.angulo) * self.speed
-        self.y_vel = math.sin(self.angulo) * self.speed   
+        self.image = pygame.image.load('down_0.png').convert_alpha()
+        self.rect = self.image.get_rect(center=pos)
+        self.direction = pygame.math.Vector2()
+        self.speed = 3.3
+        self.hitbox = self.rect.inflate(0,-10)
+        self.status = 'down'
+        self.frame_index = 0
+        self.animation_speed = 0.15
+        self.importar()
+        #movimentacao ainda em experimentacao
+    def zombie_move(self, player): 
+        player_vec = pygame.math.Vector2(player.rect.center)
+        if self.direction.y > player_vec.y:
+            self.direction.y = -1
+            self.status = 'up'
+        elif self.direction.y < player_vec.y:
+            self.direction.y = 1
+            self.status = 'down'
+        else:
+            self.direction.y = 0
+        if self.direction.x > player_vec.x:
+            self.direction.x = -1
+            self.status = 'left'
+        elif self.direction.x < player_vec.x:
+            self.direction.x = 1
+            self.status = 'right'
+        else:
+            self.direction.x = 0
+    def get_status(self):
+        if self.direction.x == 0 and self.direction.y == 0:
+            if not 'idle' in self.status:
+                self.status = self.status + '_idle'
+                
+        
+    def importar(self):
+        self.animations = {'up': ['up_0.png', 'up_1.png', 'up_2.png'], 'down': ['down_0.png', 'down_1.png', 'down_2.png'], 
+                           'left': ['left_0.png', 'left_1.png', 'left_2.png'], 'right': ['right_0.png', 'right_1.png', 'right_2.png'], 
+                           'up_idle': ['idle_up.png'], 'down_idle': ['idle_down.png'], 
+                           'left_idle': ['idle_left.png'], 'right_idle': ['idle_right.png']}
+            
+    def animar(self):
+        animation = self.animations[self.status]
+        
+        self.frame_index += self.animation_speed
+        if self.frame_index >= len(animation):
+            self.frame_index = 0
+        
+        self.image = pygame.image.load(animation[int(self.frame_index)]).convert_alpha()
+    def update(self):
+        self.zombie_move()
+        self.rect.center += self.direction * self.speed 
+        self.get_status()
+        self.animar()
+    def zombie_update(self, player):
+        self.zombie_move(self, player)
 
-    def main(self,display):
-        #Função para realiar a movimentação do personagem
-        self.x -= int(self.x_vel)
-        self.y -= int(self.y_vel)
-        pygame.draw.circle(display, '#f3d300', (self.x,self.y), 5)
-    
 
 class Car(pygame.sprite.Sprite):
     """"'Classe Carro: Determina sprite e posição do carro'"""
@@ -125,7 +180,7 @@ class CameraGroup(pygame.sprite.Group):
     def custom_draw(self, player):
         # Centraliza a camera no jogador
         self.center_camera(player)
-        self.internal_surface.fill('#808080')
+        self.internal_surface.fill('#71ddee')
 
         # Reposiciona o chão levando em conta o zoom e o personagem
         ground_offset = self.ground_rect.topleft - self.offset + self.internal_offset
@@ -142,7 +197,11 @@ class CameraGroup(pygame.sprite.Group):
         scaled_rect = scaled_surface.get_rect(center=(self.half_w, self.half_h))
         # printa a superficie das imagens
         self.display_surface.blit(scaled_surface, scaled_rect)
-
+def exibe_mensagem (msg, tamanho, cor):
+    fonte = pygame.font.SysFont('comicsansms', tamanho, cor)
+    mensagem = f'{msg}'
+    texto_formatado = fonte.render(mensagem, True, cor)
+    return texto_formatado
 
 pygame.init()
 pygame.display.set_caption('Zombie')
@@ -153,19 +212,18 @@ clock = pygame.time.Clock()
 camera_group = CameraGroup()
 # determina posição inicial do jogador e a que grupo pertence
 player = Player((640, 360), camera_group)
+
+#cria o zumbi
+spawn_zumbi_x = randint(0,700)
+spawn_zumbi_y = randint(0,600)
+zumbi = Zumbi((spawn_zumbi_x, spawn_zumbi_y), camera_group)
 # Criar 5 carror em posições aletorias (Feito para teste)
 for i in range(5):
     random_x = randint(0, 500)
     random_y = randint(0, 500)
     Car((random_x, random_y), camera_group)
-# Cooredenadas jogador
-player_x, player_y = 640, 360
-
-disparo_jogador = []
 
 while True:
-    mouse_x, mouse_y = pygame.mouse.get_pos()
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -173,18 +231,11 @@ while True:
         # Muda o zoom baseado no scroll do mouse
         if event.type == pygame.MOUSEWHEEL:
             camera_group.zoom_scale += event.y * 0.03
-        # Disparo da bala
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:
-                disparo_jogador.append(DisparoArma(player.rect.centerx, player.rect.centerx, mouse_x, mouse_y,camera_group))
-
-    for disparo in disparo_jogador:
-        disparo.main(screen)
-
-    
-    screen.fill('#808080')
+    game_over = exibe_mensagem('GAME OVER', 40, (255,0,0))
+    screen.blit(game_over, (0,0))
+    screen.fill('#71ddee')
     camera_group.update()
-    camera_group.custom_draw(player) 
+    camera_group.custom_draw(player)
 
     pygame.display.update()
     clock.tick(60)
