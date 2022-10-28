@@ -3,6 +3,7 @@ import pygame
 from mapa import *
 from tile import Tile
 from Player import Player
+import zumbi
 
 class Level:
 	def __init__(self):
@@ -26,6 +27,8 @@ class Level:
 					Tile((x,y),[self.visible_sprites,self.obstacle_sprites])
 				if col == 'p':
 					self.player = Player((x,y),[self.visible_sprites],self.obstacle_sprites)
+				if col == 'z':
+					self.zumbi = zumbi.Zumbi('boomer',(x,y),[self.visible_sprites],self.player,self.obstacle_sprites)
 
 	def run(self):
 		# update and draw the game

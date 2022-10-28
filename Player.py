@@ -9,7 +9,7 @@ class Player(pygame.sprite.Sprite):
 		self.hitbox = self.rect.inflate(0,-10)
 
 		self.direction = pygame.math.Vector2()
-		self.speed = 5
+		self.speed = 6
 
 		self.status = 'down'
 		self.frame_index = 0
