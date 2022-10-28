@@ -20,7 +20,10 @@ class Player(pygame.sprite.Sprite):
 
 	def input(self):
 		keys = pygame.key.get_pressed()
-		if keys[pygame.K_w]:
+		if keys[pygame.K_w] and keys[pygame.K_s]:
+			self.direction.y = 0
+
+		elif keys[pygame.K_w]:
 			self.direction.y = -1
 			self.status = 'up'
 		elif keys[pygame.K_s]:
@@ -28,8 +31,9 @@ class Player(pygame.sprite.Sprite):
 			self.status = 'down'
 		else:
 			self.direction.y = 0
-
-		if keys[pygame.K_a]:
+		if keys[pygame.K_a] and keys[pygame.K_d]:
+			self.direction.x = 0
+		elif keys[pygame.K_a]:
 			self.direction.x = -1
 			self.status = 'left'
 		elif keys[pygame.K_d]:
