@@ -2,7 +2,7 @@ import pygame
 from mapa import *
 
 class Player(pygame.sprite.Sprite):
-	def __init__(self,pos,groups,obstacle_sprites):
+	def __init__(self,pos,groups,obstacle_sprites, coletaveis):
 		super().__init__(groups)
 		self.image = pygame.image.load('../Projeto-IP/prota/prota_idle_down.png').convert_alpha()
 		self.rect = self.image.get_rect(topleft = pos)
@@ -16,6 +16,7 @@ class Player(pygame.sprite.Sprite):
 		self.animation_speed = 0.2
 		self.importar()
 
+		self.coletaveis = coletaveis
 		self.obstacle_sprites = obstacle_sprites
 
 	def input(self):
@@ -71,8 +72,10 @@ class Player(pygame.sprite.Sprite):
 
 		self.hitbox.x += self.direction.x * speed
 		self.collision('horizontal')
+		self.loot('horizontal')
 		self.hitbox.y += self.direction.y * speed
 		self.collision('vertical')
+		self.loot('vertical')
 		self.rect.center = self.hitbox.center
 		
 
@@ -92,6 +95,19 @@ class Player(pygame.sprite.Sprite):
 						self.hitbox.bottom = sprite.hitbox.top
 					if self.direction.y < 0: # moving up
 						self.hitbox.top = sprite.hitbox.bottom
+      
+	def loot(self,direction):
+		if direction == 'horizontal':
+			for sprite in self.coletaveis:
+				if sprite.hitbox.colliderect(self.hitbox):
+					sprite.kill()
+					print('colidiu')
+		if direction == 'vertical':
+			for sprite in self.coletaveis:
+				if sprite.hitbox.colliderect(self.hitbox):
+					sprite.kill()
+					print('colidiu')
+
 
 	def update(self):
 		self.input()
