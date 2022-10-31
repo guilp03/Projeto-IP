@@ -82,20 +82,24 @@ class Player(pygame.sprite.Sprite):
 	def collision(self,direction):
 		if direction == 'horizontal':
 			for sprite in self.obstacle_sprites:
-				if sprite.hitbox.colliderect(self.hitbox):
-						if self.direction.x > 0: # moving right
-							self.hitbox.right = sprite.hitbox.left
-						if self.direction.x < 0: # moving left
-							self.hitbox.left = sprite.hitbox.right
+				if sprite in self.coletaveis and sprite.hitbox.colliderect(self.hitbox):
+					sprite.kill()
+				elif sprite.hitbox.colliderect(self.hitbox) and sprite not in self.coletaveis :
+					if self.direction.x > 0: # moving right
+						self.hitbox.right = sprite.hitbox.left
+					if self.direction.x < 0: # moving left
+						self.hitbox.left = sprite.hitbox.right
 
 		if direction == 'vertical':
 			for sprite in self.obstacle_sprites:
-				if sprite.hitbox.colliderect(self.hitbox):
+				if sprite in self.coletaveis and sprite.hitbox.colliderect(self.hitbox):
+					sprite.kill()
+				elif sprite.hitbox.colliderect(self.hitbox) and sprite not in self.coletaveis :
 					if self.direction.y > 0: # moving down
 						self.hitbox.bottom = sprite.hitbox.top
 					if self.direction.y < 0: # moving up
 						self.hitbox.top = sprite.hitbox.bottom
-      
+	
 	def loot(self,direction):
 		if direction == 'horizontal':
 			for sprite in self.coletaveis:
