@@ -1,5 +1,4 @@
 import pygame
-
 from typing_extensions import Self
 
 class DisparoArma(pygame.sprite.Sprite):
@@ -8,29 +7,28 @@ class DisparoArma(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = pygame.image.load('../Projeto-IP/prota/prota_idle_down.png').convert_alpha()
         self.rect = self.image.get_rect(topleft = pos)
-        self.hitbox = self.rect.inflate(0,-10)
-        self.sentido = status
+        self.hitbox = self.rect.inflate(0,0)
         self.direction = pygame.math.Vector2()
         self.speed = 15
         self.obstacle_sprites = obstacle_sprites
 
-    def direcao(self):
-        if self.sentido == 'Up':
-            self.direction.y = -1
-        elif self.sentido == 'Down':
-            self.direction.y = 1
-        elif self.sentido == 'Left':
-            self.direction.x = -1
-        elif self.sentido == 'Right':
-            self.direction.x = 1
+    #def direcao(self):
+        #if self.sentido == 'up':
+            #self.direction.y = -1
+        #elif self.sentido == 'down':
+            #self.direction.y = 1
+        #elif self.sentido == 'left':
+            #self.direction.x = -1
+        #elif self.sentido == 'right':
+            #self.direction.x = 1
 
 
     def move(self,speed):
         if self.direction.magnitude() != 0:
             self.direction = self.direction.normalize()
-        self.hitbox.x += self.direction.x * speed
+        self.hitbox.x += 1 * speed
         self.collision('horizontal')
-        self.hitbox.y += self.direction.y * speed
+        self.hitbox.y += 0 * speed
         self.collision('vertical')
         self.rect.center = self.hitbox.center
 		
