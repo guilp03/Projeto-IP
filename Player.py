@@ -8,6 +8,7 @@ class Player(pygame.sprite.Sprite):
 		self.image = pygame.image.load('../Projeto-IP/prota/prota_idle_down.png').convert_alpha()
 		self.rect = self.image.get_rect(topleft = pos)
 		self.hitbox = self.rect.inflate(0,-10)
+		self.cooldown = 0
 
 		self.direction = pygame.math.Vector2()
 		self.speed = 6
@@ -44,7 +45,8 @@ class Player(pygame.sprite.Sprite):
 		else:
 			self.direction.x = 0
 
-		if keys[pygame.K_p]:
+		if keys[pygame.K_p] and self.cooldown == 60:
+			self.cooldown = 0
 			DisparoArma((self.rect.x,self.rect.y), self.group, self.obstacle_sprites, self.status)
 		
 
@@ -103,3 +105,5 @@ class Player(pygame.sprite.Sprite):
 		self.move(self.speed)
 		self.get_status()
 		self.animar()
+		if self.cooldown < 60:
+			self.cooldown += 1

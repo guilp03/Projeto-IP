@@ -11,24 +11,25 @@ class DisparoArma(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2()
         self.speed = 15
         self.obstacle_sprites = obstacle_sprites
+        print(status)
 
-    #def direcao(self):
-        #if self.sentido == 'up':
-            #self.direction.y = -1
-        #elif self.sentido == 'down':
-            #self.direction.y = 1
-        #elif self.sentido == 'left':
-            #self.direction.x = -1
-        #elif self.sentido == 'right':
-            #self.direction.x = 1
+    def direcao(self):
+        if self.sentido == 'up' or self.sentido == 'up_idle':
+            self.direction.y = -1
+        elif self.sentido == 'down' or self.sentido == 'down_idle':
+            self.direction.y = 1
+        elif self.sentido == 'left' or self.sentido == 'left_idle':
+            self.direction.x = -1
+        elif self.sentido == 'right' or self.sentido == 'right_idle':
+            self.direction.x = 1
 
 
     def move(self,speed):
         if self.direction.magnitude() != 0:
             self.direction = self.direction.normalize()
-        self.hitbox.x += 1 * speed
+        self.hitbox.x += self.direction.x * speed
         self.collision('horizontal')
-        self.hitbox.y += 0 * speed
+        self.hitbox.y += self.direction.y * speed
         self.collision('vertical')
         self.rect.center = self.hitbox.center
 		
