@@ -3,6 +3,8 @@ import pygame
 from mapa import *
 from tile import Tile
 from Player import Player
+from coletaveis import Coletaveis
+import constru
 
 class Level:
 	def __init__(self):
@@ -26,6 +28,19 @@ class Level:
 					Tile((x,y),[self.visible_sprites,self.obstacle_sprites])
 				if col == 'p':
 					self.player = Player((x,y),[self.visible_sprites],self.obstacle_sprites)
+				if col == 'm':
+					Coletaveis((x,y),[self.visible_sprites,self.obstacle_sprites])
+				if col == 'ce':
+					constru.Celeiro((x,y),[self.visible_sprites,self.obstacle_sprites])
+				if col == 't':
+					constru.Trator((x,y),[self.visible_sprites,self.obstacle_sprites])
+				if col == 'ca':
+					constru.Casa((x,y),[self.visible_sprites,self.obstacle_sprites])
+
+
+				
+
+
 
 	def run(self):
 		# update and draw the game

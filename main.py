@@ -1,14 +1,13 @@
 import pygame, sys
 from mapa import *
 from level import Level
-
 class Game:
 	def __init__(self):
 		  
 		# general setup
 		pygame.init()
 		self.screen = pygame.display.set_mode((1280,720))
-		pygame.display.set_caption('Zelda')
+		pygame.display.set_caption('Game')
 		self.clock = pygame.time.Clock()
 
 		self.level = Level()
