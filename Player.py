@@ -72,10 +72,8 @@ class Player(pygame.sprite.Sprite):
 
 		self.hitbox.x += self.direction.x * speed
 		self.collision('horizontal')
-		self.loot('horizontal')
 		self.hitbox.y += self.direction.y * speed
 		self.collision('vertical')
-		self.loot('vertical')
 		self.rect.center = self.hitbox.center
 		
 
