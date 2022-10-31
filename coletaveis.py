@@ -10,4 +10,4 @@ class Coletaveis(pygame.sprite.Sprite):
         self.image = pygame.image.load('medkit.png').convert_alpha()
         # Determinando posição inicial
         self.rect = self.image.get_rect(topleft=pos)
-        self.hitbox = self.rect.inflate(0,-10)
+        self.hitbox = self.rect.inflate(0,0)
