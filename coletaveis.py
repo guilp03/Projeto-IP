@@ -12,6 +12,6 @@ class Coletaveis(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0,0)
     
-    def colisao(self, player):
-        if player.hitbox.colliderect(self.hitbox):
+    #def colisao(self, player):
+        #if player.hitbox.colliderect(self.hitbox):
             

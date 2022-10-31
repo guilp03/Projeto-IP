@@ -1,4 +1,5 @@
-import pygame 
+import pygame
+from balistica import DisparoArma
 from mapa import *
 
 class Player(pygame.sprite.Sprite):
@@ -17,6 +18,7 @@ class Player(pygame.sprite.Sprite):
 		self.importar()
 
 		self.obstacle_sprites = obstacle_sprites
+		self.group = groups
 
 	def input(self):
 		keys = pygame.key.get_pressed()
@@ -41,6 +43,9 @@ class Player(pygame.sprite.Sprite):
 			self.status = 'right'
 		else:
 			self.direction.x = 0
+
+		if keys[pygame.K_p]:
+			DisparoArma((self.rect.x,self.rect.y), self.group, self.obstacle_sprites, self.status)
 		
 
 	def get_status(self):
