@@ -3,7 +3,7 @@ from balistica import DisparoArma
 from mapa import *
 
 class Player(pygame.sprite.Sprite):
-	def __init__(self,pos,groups,obstacle_sprites):
+	def __init__(self,pos,groups,obstacle_sprites, coletaveis):
 		super().__init__(groups)
 		self.image = pygame.image.load('../Projeto-IP/prota/prota_idle_down.png').convert_alpha()
 		self.rect = self.image.get_rect(topleft = pos)
@@ -18,6 +18,7 @@ class Player(pygame.sprite.Sprite):
 		self.animation_speed = 0.2
 		self.importar()
 
+		self.coletaveis = coletaveis
 		self.obstacle_sprites = obstacle_sprites
 		self.group = groups
 
@@ -86,15 +87,19 @@ class Player(pygame.sprite.Sprite):
 	def collision(self,direction):
 		if direction == 'horizontal':
 			for sprite in self.obstacle_sprites:
-				if sprite.hitbox.colliderect(self.hitbox):
-						if self.direction.x > 0: # moving right
-							self.hitbox.right = sprite.hitbox.left
-						if self.direction.x < 0: # moving left
-							self.hitbox.left = sprite.hitbox.right
+				if sprite in self.coletaveis and sprite.hitbox.colliderect(self.hitbox):
+					sprite.kill()
+				elif sprite.hitbox.colliderect(self.hitbox) and sprite not in self.coletaveis :
+					if self.direction.x > 0: # moving right
+						self.hitbox.right = sprite.hitbox.left
+					if self.direction.x < 0: # moving left
+						self.hitbox.left = sprite.hitbox.right
 
 		if direction == 'vertical':
 			for sprite in self.obstacle_sprites:
-				if sprite.hitbox.colliderect(self.hitbox):
+				if sprite in self.coletaveis and sprite.hitbox.colliderect(self.hitbox):
+					sprite.kill()
+				elif sprite.hitbox.colliderect(self.hitbox) and sprite not in self.coletaveis :
 					if self.direction.y > 0: # moving down
 						self.hitbox.bottom = sprite.hitbox.top
 					if self.direction.y < 0: # moving up

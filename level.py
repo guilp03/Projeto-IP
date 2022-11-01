@@ -15,7 +15,7 @@ class Level:
 		# sprite group setup
 		self.visible_sprites = CameraGroup()
 		self.obstacle_sprites = pygame.sprite.Group()
-		self.lista_coletaveis = pygame.sprite.Group()
+		self.coletaveis = pygame.sprite.Group()
 
 		# sprite setup
 		self.create_map()
@@ -28,11 +28,11 @@ class Level:
 				if col == 'x':
 					Tile((x,y),[self.visible_sprites,self.obstacle_sprites])
 				if col == 'p':
-					self.player = Player((x,y),self.visible_sprites,self.obstacle_sprites)
+					self.player = Player((x,y),[self.visible_sprites],self.obstacle_sprites, self.coletaveis)
 				if col == 'z':
 					self.zumbi = zumbi.Zumbi('boomer',(x,y),[self.visible_sprites],self.player,self.obstacle_sprites)
-				#if col == 'c':
-					#Coletaveis((x,y),[self.visible_sprites],self.obstacle_sprites)
+				if col == 'c':
+					Coletaveis((x,y),self.visible_sprites, self.coletaveis, self.obstacle_sprites )
 	def run(self):
 		# update and draw the game
 		self.visible_sprites.custom_draw(self.player)
