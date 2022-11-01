@@ -9,19 +9,25 @@ class DisparoArma(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(0,0)
         self.direction = pygame.math.Vector2()
+        self.sentido = status
         self.speed = 15
         self.obstacle_sprites = obstacle_sprites
         print(status)
 
     def direcao(self):
+        print(self.sentido)
         if self.sentido == 'up' or self.sentido == 'up_idle':
             self.direction.y = -1
+            print('-1')
         elif self.sentido == 'down' or self.sentido == 'down_idle':
             self.direction.y = 1
+            print('1')
         elif self.sentido == 'left' or self.sentido == 'left_idle':
             self.direction.x = -1
+            print('-1')
         elif self.sentido == 'right' or self.sentido == 'right_idle':
             self.direction.x = 1
+            print('1')
 
 
     def move(self,speed):
@@ -38,18 +44,13 @@ class DisparoArma(pygame.sprite.Sprite):
         if direction == 'horizontal':
             for sprite in self.obstacle_sprites:
                 if sprite.hitbox.colliderect(self.hitbox):
-                        if self.direction.x > 0: # moving right
-                            self.hitbox.right = sprite.hitbox.left
-                        if self.direction.x < 0: # moving left
-                            self.hitbox.left = sprite.hitbox.right
+                    self.kill()
 
         if direction == 'vertical':
             for sprite in self.obstacle_sprites:
                 if sprite.hitbox.colliderect(self.hitbox):
-                    if self.direction.y > 0: # moving down
-                        self.hitbox.bottom = sprite.hitbox.top
-                    if self.direction.y < 0: # moving up
-                        self.hitbox.top = sprite.hitbox.bottom
+                    self.kill()
 
     def update(self):
+        self.direcao()
         self.move(self.speed)
