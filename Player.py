@@ -8,7 +8,7 @@ class Player(pygame.sprite.Sprite):
 		self.image = pygame.image.load('../Projeto-IP/prota/prota_idle_down.png').convert_alpha()
 		self.rect = self.image.get_rect(topleft = pos)
 		self.hitbox = self.rect.inflate(0,-10)
-		self.cooldown = 0
+		self.cooldown_tiro = 0
 
 		self.direction = pygame.math.Vector2()
 		self.speed = 6
@@ -21,6 +21,8 @@ class Player(pygame.sprite.Sprite):
 		self.coletaveis = coletaveis
 		self.obstacle_sprites = obstacle_sprites
 		self.group = groups
+
+		self.cooldown_spawn = 0
 
 	def input(self):
 		keys = pygame.key.get_pressed()
@@ -46,8 +48,8 @@ class Player(pygame.sprite.Sprite):
 		else:
 			self.direction.x = 0
 
-		if keys[pygame.K_p] and self.cooldown == 60:
-			self.cooldown = 0
+		if keys[pygame.K_p] and self.cooldown_tiro == 60:
+			self.cooldown_tiro = 0
 			DisparoArma((self.rect.x,self.rect.y), self.group, self.obstacle_sprites, self.status)
 		
 
@@ -89,6 +91,7 @@ class Player(pygame.sprite.Sprite):
 			for sprite in self.obstacle_sprites:
 				if sprite in self.coletaveis and sprite.hitbox.colliderect(self.hitbox):
 					sprite.kill()
+					self.cooldown_spawn = 0
 				elif sprite.hitbox.colliderect(self.hitbox) and sprite not in self.coletaveis :
 					if self.direction.x > 0: # moving right
 						self.hitbox.right = sprite.hitbox.left
@@ -99,6 +102,7 @@ class Player(pygame.sprite.Sprite):
 			for sprite in self.obstacle_sprites:
 				if sprite in self.coletaveis and sprite.hitbox.colliderect(self.hitbox):
 					sprite.kill()
+					self.cooldown_spawn = 0
 				elif sprite.hitbox.colliderect(self.hitbox) and sprite not in self.coletaveis :
 					if self.direction.y > 0: # moving down
 						self.hitbox.bottom = sprite.hitbox.top
@@ -106,9 +110,16 @@ class Player(pygame.sprite.Sprite):
 						self.hitbox.top = sprite.hitbox.bottom
 
 	def update(self):
+		from level import Level
 		self.input()
 		self.move(self.speed)
 		self.get_status()
 		self.animar()
-		if self.cooldown < 60:
-			self.cooldown += 1
+		if self.cooldown_tiro < 60:
+			self.cooldown_tiro += 1
+		if self.cooldown_spawn < 1800:
+			self.cooldown_spawn += 1
+		if self.cooldown_spawn == 1800:
+			Level.spawn_coletaveis(self.group, self.obstacle_sprites, self.coletaveis, self.cooldown_spawn)
+			self.cooldown_spawn = 0
+		
