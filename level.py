@@ -5,6 +5,7 @@ from tile import Tile
 from Player import Player
 from coletaveis import Coletaveis
 import constru
+import cerca
 
 class Level:
 	def __init__(self):
@@ -25,7 +26,17 @@ class Level:
 				x = col_index * TILESIZE
 				y = row_index * TILESIZE
 				if col == 'x':
-					Tile((x,y),[self.visible_sprites,self.obstacle_sprites])
+					cerca.Cerca((x,y),[self.visible_sprites,self.obstacle_sprites])
+				if col == 'x1':
+					cerca.Cerca1((x,y),[self.visible_sprites,self.obstacle_sprites])
+				if col == 'x2':
+					cerca.Cerca2((x,y),[self.visible_sprites,self.obstacle_sprites])
+				if col == 'x3':
+					cerca.Cerca3((x,y),[self.visible_sprites,self.obstacle_sprites])
+				if col == 'x4':
+					cerca.Cerca4((x,y),[self.visible_sprites,self.obstacle_sprites])
+				if col == 'x5':
+					cerca.Cerca5((x,y),[self.visible_sprites,self.obstacle_sprites])
 				if col == 'p':
 					self.player = Player((x,y),[self.visible_sprites],self.obstacle_sprites)
 				if col == 'm':
@@ -55,10 +66,25 @@ class CameraGroup(pygame.sprite.Group):
         self.half_width = self.display_surface.get_size()[0] // 2
         self.half_height = self.display_surface.get_size()[1] // 2
         self.offset = pygame.math.Vector2()
+		#parte do chao esta funcionando agr so falta a imagem certa
+		#criando o chao
+        #self.floor_surf = pygame.image.load('ground.png')
+        #self.floor_rect = self.floor_surf.get_rect(topleft=(0,0))
+		
+
 
     def custom_draw(self,player):
         self.offset.x = player.rect.centerx - self.half_width
         self.offset.y = player.rect.centery - self.half_height
+		#desenhando o chao
+        #self.floor_offset_pos = self.floor_rect.topleft - self.offset
+        #self.display_surface.blit(self.floor_surf, self.floor_offset_pos)
+		
+		
+
+		
+
+	
 
         # for sprite in self.sprites():
         for sprite in sorted(self.sprites(),key = lambda sprite: sprite.rect.centery):
