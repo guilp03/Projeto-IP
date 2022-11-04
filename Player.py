@@ -3,14 +3,14 @@ from balistica import DisparoArma
 from mapa import *
 
 class Player(pygame.sprite.Sprite):
-	def __init__(self,pos,groups,obstacle_sprites, coletaveis):
+	def __init__(self,pos,groups,obstacle_sprites, coletaveis, zumbi, bala):
 		super().__init__(groups)
 		self.vida = 80
 		self.dano = 40
 		self.pente = 50
 		self.image = pygame.image.load('../Projeto-IP/prota/prota_idle_down.png').convert_alpha()
 		self.rect = self.image.get_rect(topleft = pos)
-		self.hitbox = self.rect.inflate(0,-10)
+		self.hitbox = self.rect.inflate(0, -10)
 		self.cooldown_tiro = 30
 
 		self.direction = pygame.math.Vector2()
@@ -24,6 +24,8 @@ class Player(pygame.sprite.Sprite):
 		self.coletaveis = coletaveis
 		self.obstacle_sprites = obstacle_sprites
 		self.group = groups
+		self.zumbi = zumbi
+		self.bala = bala
 
 		self.cooldown_spawn_medkit = 0
 		self.cooldown_spawn_ammo = 0
@@ -55,7 +57,7 @@ class Player(pygame.sprite.Sprite):
 
 		if keys[pygame.K_p] and self.cooldown_tiro == 30:
 			self.cooldown_tiro = 0
-			DisparoArma((self.rect.x,self.rect.y), self.group, self.obstacle_sprites, self.status)
+			DisparoArma((self.rect.x,self.rect.y), [self.group, self.bala], self.obstacle_sprites, self.status, self.zumbi)
 		
 
 	def get_status(self):
@@ -110,10 +112,17 @@ class Player(pygame.sprite.Sprite):
 					if sprite.nome == 'pocao':
 						sprite.kill()
 						self.dano == self.dano*2
-      
+
 				elif sprite.hitbox.colliderect(self.hitbox) and sprite not in self.coletaveis :
 					if self.direction.x > 0: # moving right
 						self.hitbox.right = sprite.hitbox.left
+					if self.direction.x < 0: # moving left
+						self.hitbox.left = sprite.hitbox.right
+			
+			for sprite in self.zumbi:
+				if sprite.hitbox.colliderect(self.hitbox):
+					if self.direction.x > 0: # moving right
+							self.hitbox.right = sprite.hitbox.left
 					if self.direction.x < 0: # moving left
 						self.hitbox.left = sprite.hitbox.right
 
@@ -136,11 +145,19 @@ class Player(pygame.sprite.Sprite):
 						sprite.kill()
 						self.dano == self.dano*2
 						
-				elif sprite.hitbox.colliderect(self.hitbox) and sprite not in self.coletaveis :
+				elif sprite.hitbox.colliderect(self.hitbox) and sprite not in self.coletaveis:
 					if self.direction.y > 0: # moving down
 						self.hitbox.bottom = sprite.hitbox.top
 					if self.direction.y < 0: # moving up
 						self.hitbox.top = sprite.hitbox.bottom
+			
+			for sprite in self.zumbi:
+				if sprite.hitbox.colliderect(self.hitbox):
+					if self.direction.y > 0: # moving down
+						self.hitbox.bottom = sprite.hitbox.top
+					if self.direction.y < 0: # moving up
+						self.hitbox.top = sprite.hitbox.bottom
+
 
 	def update(self):
 		from level import Level

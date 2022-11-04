@@ -1,4 +1,4 @@
-from typing_extensions import Self
+
 import pygame 
 from mapa import *
 from tile import Tile
@@ -21,6 +21,9 @@ class Level:
 		self.visible_sprites = CameraGroup()
 		self.obstacle_sprites = pygame.sprite.Group()
 		self.coletaveis = pygame.sprite.Group()
+		self.colisao_zumbi = pygame.sprite.Group()
+		self.colisao_player = pygame.sprite.Group()
+		self.bala = pygame.sprite.Group()
 
 		# sprite setup
 		self.create_map()
@@ -37,9 +40,9 @@ class Level:
 				if col == 'x2':
 					cerca.Cerca2((x,y),[self.visible_sprites,self.obstacle_sprites])
 				if col == 'p':
-					self.player = Player((x,y),[self.visible_sprites],self.obstacle_sprites, self.coletaveis)
+					self.player = Player((x,y),[self.visible_sprites, self.colisao_player],self.obstacle_sprites, self.coletaveis, self.colisao_zumbi, self.bala)
 				if col == 'z':
-					self.zumbi = zumbi.Zumbi('boomer',(x,y),[self.visible_sprites],self.player,self.obstacle_sprites)
+					self.zumbi = zumbi.Zumbi('boomer',(x,y),[self.visible_sprites, self.colisao_zumbi],self.player,self.obstacle_sprites, self.colisao_player)
 				if col == 'me':
 					Coletaveis((x,y),'medkit',self.visible_sprites, self.coletaveis, self.obstacle_sprites )
 				if col == 'mu':
@@ -53,7 +56,6 @@ class Level:
 	def spawn_coletaveis(visible_sprites, obstacle_sprites, coletaveis, cooldown_medkit, cooldown_ammo, cooldown_pot):
 		lista_aux = ['medkit', 'nada', 'nada']
 		lista_aux_2 = ['ammo', 'nada', 'nada']
-		lista_aux_3 = ['pocao', 'nada', 'nada']
 		if cooldown_medkit == 1800:
 			for row_index,row in enumerate(WORLD_MAP):
 				for col_index, col in enumerate(row):

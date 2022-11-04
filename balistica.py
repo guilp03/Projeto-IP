@@ -1,9 +1,10 @@
 import pygame
-from typing_extensions import Self
+
+
 
 class DisparoArma(pygame.sprite.Sprite):
     """'CLASSE PRARA IMPLEMENTAR O PROJETIL QUE VAI SER DISPARADO PELA ARMA'"""
-    def __init__(self, pos, groups, obstacle_sprites, status):
+    def __init__(self, pos, groups, obstacle_sprites, status, colisao_zumbi):
         super().__init__(groups)
         self.image = pygame.image.load('../Projeto-IP/tiro/tiro_right.png').convert_alpha()
         self.rect = self.image.get_rect(topleft = pos)
@@ -12,6 +13,7 @@ class DisparoArma(pygame.sprite.Sprite):
         self.sentido = status
         self.speed = 15
         self.obstacle_sprites = obstacle_sprites
+        self.zumbi = colisao_zumbi
         self.index = 0
         self.animation_speed = 0.2
         self.animations = {'up': ['../Projeto-IP/tiro/tiro3_up.png', '../Projeto-IP/tiro/tiro4_up.png'],
@@ -57,8 +59,22 @@ class DisparoArma(pygame.sprite.Sprite):
                     self.image = pygame.image.load(animation[int(self.index)]).convert_alpha()
                     self.count= True
 
+            for sprite in self.zumbi:
+                if sprite.hitbox.colliderect(self.hitbox):
+                    self.direction.y = 0
+                    self.direction.x = 0
+                    self.image = pygame.image.load(animation[int(self.index)]).convert_alpha()
+                    self.count = True
+
         if direction == 'vertical':
             for sprite in self.obstacle_sprites:
+                if sprite.hitbox.colliderect(self.hitbox):
+                    self.direction.y = 0
+                    self.direction.x = 0
+                    self.image = pygame.image.load(animation[int(self.index)]).convert_alpha()
+                    self.count = True
+            
+            for sprite in self.zumbi:
                 if sprite.hitbox.colliderect(self.hitbox):
                     self.direction.y = 0
                     self.direction.x = 0
