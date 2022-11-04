@@ -31,12 +31,7 @@ class Level:
 					cerca.Cerca1((x,y),[self.visible_sprites,self.obstacle_sprites])
 				if col == 'x2':
 					cerca.Cerca2((x,y),[self.visible_sprites,self.obstacle_sprites])
-				if col == 'x3':
-					cerca.Cerca3((x,y),[self.visible_sprites,self.obstacle_sprites])
-				if col == 'x4':
-					cerca.Cerca4((x,y),[self.visible_sprites,self.obstacle_sprites])
-				if col == 'x5':
-					cerca.Cerca5((x,y),[self.visible_sprites,self.obstacle_sprites])
+				
 				if col == 'p':
 					self.player = Player((x,y),[self.visible_sprites],self.obstacle_sprites)
 				if col == 'm':
@@ -68,8 +63,8 @@ class CameraGroup(pygame.sprite.Group):
         self.offset = pygame.math.Vector2()
 		#parte do chao esta funcionando agr so falta a imagem certa
 		#criando o chao
-        #self.floor_surf = pygame.image.load('ground.png')
-        #self.floor_rect = self.floor_surf.get_rect(topleft=(0,0))
+        self.floor_surf = pygame.image.load('map_IP_cop.png')
+        self.floor_rect = self.floor_surf.get_rect(topleft=(-850,-550))
 		
 
 
@@ -77,8 +72,8 @@ class CameraGroup(pygame.sprite.Group):
         self.offset.x = player.rect.centerx - self.half_width
         self.offset.y = player.rect.centery - self.half_height
 		#desenhando o chao
-        #self.floor_offset_pos = self.floor_rect.topleft - self.offset
-        #self.display_surface.blit(self.floor_surf, self.floor_offset_pos)
+        self.floor_offset_pos = self.floor_rect.topleft - self.offset
+        self.display_surface.blit(self.floor_surf, self.floor_offset_pos)
 		
 		
 
