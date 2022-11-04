@@ -23,7 +23,7 @@ class Level:
 		self.visible_sprites = CameraGroup()
 		self.obstacle_sprites = pygame.sprite.Group()
 		self.coletaveis = pygame.sprite.Group()
-	
+
 
 		# sprite setup
 		self.create_map()
@@ -56,12 +56,12 @@ class Level:
 					constru.Casa((x,y),[self.visible_sprites,self.obstacle_sprites])
 				if col == 'pi':
 					Pistol((x,y),'pistol',self.visible_sprites, self.coletaveis, self.obstacle_sprites)
-				
+
 	def spawn_coletaveis(visible_sprites, obstacle_sprites, coletaveis, cooldown_medkit, cooldown_ammo, cooldown_pot):
 		lista_aux = ['medkit', 'nada', 'nada']
 		lista_aux_2 = ['ammo', 'nada', 'nada']
 		lista_aux_3 = ['pocao', 'nada', 'nada']
-		if cooldown_medkit == 1800:
+		if cooldown_medkit == 1800:			
 			for row_index,row in enumerate(WORLD_MAP):
 				for col_index, col in enumerate(row):
 					x = col_index * TILESIZE
@@ -127,7 +127,7 @@ class CameraGroup(pygame.sprite.Group):
 
 		
 
-	
+
 
         # for sprite in self.sprites():
         for sprite in sorted(self.sprites(),key = lambda sprite: sprite.rect.centery):
