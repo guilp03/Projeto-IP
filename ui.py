@@ -44,6 +44,7 @@ class UI():
 
         #drawing the bar
         pg.draw.rect(self.display_surface,color, current_rect)
+        pg.draw.rect(self.display_surface, UI_BORDER_COLLOR, current_rect, 3)
 
 
     def display(self,player):
