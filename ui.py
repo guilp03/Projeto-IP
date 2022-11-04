@@ -38,9 +38,9 @@ class UI():
 
         # convert stat to pixel
         ratio = current / max_amount
-        current_largura = bg_rect.largura * ratio
-        current_rect = bg_rect.largura.copy()
-        current_rect.largura = current_largura
+        current_width = bg_rect.width * ratio
+        current_rect = bg_rect.copy()
+        current_rect.width = current_width
 
         #drawing the bar
         pg.draw.rect(self.display_surface,color, current_rect)
