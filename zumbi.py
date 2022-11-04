@@ -2,13 +2,14 @@ import pygame
 from mapa import *
 class Zumbi(pygame.sprite.Sprite):
     #definindo os dados base de um zumbi
-    def __init__(self,tipo_zumbi, pos, group, player, obstacle_sprites):
+    def __init__(self,tipo_zumbi, pos, group, player, obstacle_sprites, colisao_player):
         super().__init__(group)
         #Player
         self.player = player
+        
         # Tipo do zumbi
         self.zumbis = ['normal', 'zumbinho', 'boomer']
-        self.zombies= {'normal': {'hp': 40, 'speed': 3, 'animation_speed': 0.15}, 'zumbinho': {'hp': 40, 'speed': 5, 'animation_speed': 0.2}, 'boomer': {'hp': 40, 'speed': 2, 'animation_speed': 0.1 }  }
+        self.zombies= {'normal': {'hp': 150, 'speed': 3, 'animation_speed': 0.15}, 'zumbinho': {'hp': 50, 'speed': 5, 'animation_speed': 0.2}, 'boomer': {'hp': 300, 'speed': 2, 'animation_speed': 0.1 }  }
         self.tipo_zumbi = tipo_zumbi
         infos = self.zombies[self.tipo_zumbi]
         # HP e VEl
@@ -18,12 +19,13 @@ class Zumbi(pygame.sprite.Sprite):
         self.animation_speed = infos['animation_speed']
         self.image = pygame.image.load(f'../Projeto-IP/{self.tipo_zumbi}/{self.tipo_zumbi}_down_0.png').convert_alpha()
         self.rect = self.image.get_rect(center=pos)
-        self.hitbox = self.rect.inflate(0,-10)
+        self.hitbox = self.rect.inflate(0,0)
         self.direction = pygame.math.Vector2()
         self.status = 'down'
         self.frame_index = 0
         self.importar()
 
+        self.colisao_player = colisao_player
         self.obstacle_sprites = obstacle_sprites
 
         #movimentacao ainda em experimentacao
@@ -99,6 +101,20 @@ class Zumbi(pygame.sprite.Sprite):
                     if self.direction.x < 0: # moving left
                         self.hitbox.left = sprite.hitbox.right
 
+            for sprite in self.colisao_player:
+                if sprite.hitbox.colliderect(self.hitbox):
+                    self.player.vida -= 20
+                    if self.direction.x > 0: # moving right
+                      self.hitbox.x -= self.speed * 15
+                    if self.direction.x < 0: # moving left
+                       self.hitbox.x += self.speed * 15
+            
+            for sprite in self.player.bala:
+                if sprite.hitbox.colliderect(self.hitbox):
+                    self.hp -= self.player.dano
+                    if self.hp <= 0:
+                        self.kill()
+
         if direction == 'vertical':
             for sprite in self.obstacle_sprites:
                 if sprite.hitbox.colliderect(self.hitbox):
@@ -106,7 +122,20 @@ class Zumbi(pygame.sprite.Sprite):
                         self.hitbox.bottom = sprite.hitbox.top
                     if self.direction.y < 0: # moving up
                         self.hitbox.top = sprite.hitbox.bottom
-    
+            
+            for sprite in self.colisao_player:
+                if sprite.hitbox.colliderect(self.hitbox):
+                    self.player.vida -= 20
+                    if self.direction.y > 0: # moving down
+                        self.hitbox.y -= self.speed * 15
+                    if self.direction.y < 0: # moving up
+                        self.hitbox.y += self.speed * 15
+
+            for sprite in self.player.bala:
+                if sprite.hitbox.colliderect(self.hitbox):
+                    self.hp -= self.player.dano
+                    if self.hp <= 0:
+                        self.kill()
     def update(self):
         self.zombie_move()
         self.move(self.speed)
