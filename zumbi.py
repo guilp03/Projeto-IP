@@ -8,7 +8,7 @@ class Zumbi(pygame.sprite.Sprite):
         self.player = player
         # Tipo do zumbi
         self.zumbis = ['normal', 'zumbinho', 'boomer']
-        self.zombies= {'normal': {'hp': 40, 'speed': 3, 'animation_speed': 0.15}, 'zumbinho': {'hp': 40, 'speed': 5, 'animation_speed': 0.2}, 'boomer': {'hp': 40, 'speed': 2, 'animation_speed': 0.1 }  }
+        self.zombies= {'normal': {'hp': 150, 'speed': 3, 'animation_speed': 0.15}, 'zumbinho': {'hp': 50, 'speed': 5, 'animation_speed': 0.2}, 'boomer': {'hp': 300, 'speed': 2, 'animation_speed': 0.1 }  }
         self.tipo_zumbi = tipo_zumbi
         infos = self.zombies[self.tipo_zumbi]
         # HP e VEl

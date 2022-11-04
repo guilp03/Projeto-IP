@@ -5,8 +5,9 @@ from tile import Tile
 from Player import Player
 import zumbi
 from coletaveis import Coletaveis
+from coletaveis import Ammo
+from coletaveis import Pocao
 from random import randint
-from coletaveis import Coletaveis
 import constru
 import cerca
 
@@ -35,27 +36,30 @@ class Level:
 					cerca.Cerca1((x,y),[self.visible_sprites,self.obstacle_sprites])
 				if col == 'x2':
 					cerca.Cerca2((x,y),[self.visible_sprites,self.obstacle_sprites])
-				
 				if col == 'p':
 					self.player = Player((x,y),[self.visible_sprites],self.obstacle_sprites, self.coletaveis)
 				if col == 'z':
 					self.zumbi = zumbi.Zumbi('boomer',(x,y),[self.visible_sprites],self.player,self.obstacle_sprites)
-				if col == 'm':
+				if col == 'me':
 					Coletaveis((x,y),'medkit',self.visible_sprites, self.coletaveis, self.obstacle_sprites )
+				if col == 'mu':
+					Ammo((x,y),'ammo',self.visible_sprites, self.coletaveis, self.obstacle_sprites )
 				if col == 'ce':
 					constru.Celeiro((x,y),[self.visible_sprites,self.obstacle_sprites])
 				if col == 't':
 					constru.Trator((x,y),[self.visible_sprites,self.obstacle_sprites])
 				if col == 'ca':
 					constru.Casa((x,y),[self.visible_sprites,self.obstacle_sprites])
-	def spawn_coletaveis(visible_sprites, obstacle_sprites, coletaveis, cooldown):
-		lista_aux = ['medkit', 'nada', 'nada', 'nada']
-		if cooldown == 1800:
+	def spawn_coletaveis(visible_sprites, obstacle_sprites, coletaveis, cooldown_medkit, cooldown_ammo, cooldown_pot):
+		lista_aux = ['medkit', 'nada', 'nada']
+		lista_aux_2 = ['ammo', 'nada', 'nada']
+		lista_aux_3 = ['pocao', 'nada', 'nada']
+		if cooldown_medkit == 1800:
 			for row_index,row in enumerate(WORLD_MAP):
 				for col_index, col in enumerate(row):
 					x = col_index * TILESIZE
 					y = row_index * TILESIZE
-					if col == 'j':
+					if col == 'm':
 						index = randint(0, len(lista_aux) - 1)
 						criado = lista_aux[index]
 						if criado == 'medkit':
@@ -63,6 +67,26 @@ class Level:
 							lista_aux.remove('medkit')
 						else:
 							lista_aux.remove('nada')
+		if cooldown_ammo == 1200:
+			for row_index,row in enumerate(WORLD_MAP):
+				for col_index, col in enumerate(row):
+					x = col_index * TILESIZE
+					y = row_index * TILESIZE
+					if col == 'mun':
+						index = randint(0, len(lista_aux_2) - 1)
+						criado = lista_aux_2[index]
+						if criado == 'ammo':
+							Ammo((x,y), 'ammo', visible_sprites, coletaveis, obstacle_sprites )
+							lista_aux_2.remove('ammo')
+						else:
+							lista_aux_2.remove('nada')
+		if cooldown_pot == 3600:
+			for row_index,row in enumerate(WORLD_MAP):
+				for col_index, col in enumerate(row):
+					x = col_index * TILESIZE
+					y = row_index * TILESIZE
+					if col == 'pot':
+						Pocao((x,y), 'pocao', visible_sprites, coletaveis, obstacle_sprites )
 
         
         

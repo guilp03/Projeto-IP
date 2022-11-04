@@ -6,6 +6,8 @@ class Player(pygame.sprite.Sprite):
 	def __init__(self,pos,groups,obstacle_sprites, coletaveis):
 		super().__init__(groups)
 		self.vida = 80
+		self.dano = 40
+		self.pente = 50
 		self.image = pygame.image.load('../Projeto-IP/prota/prota_idle_down.png').convert_alpha()
 		self.rect = self.image.get_rect(topleft = pos)
 		self.hitbox = self.rect.inflate(0,-10)
@@ -24,6 +26,8 @@ class Player(pygame.sprite.Sprite):
 		self.group = groups
 
 		self.cooldown_spawn_medkit = 0
+		self.cooldown_spawn_ammo = 0
+		self.cooldown_pot = 0
 
 	def input(self):
 		keys = pygame.key.get_pressed()
@@ -98,6 +102,15 @@ class Player(pygame.sprite.Sprite):
 							self.vida += 25
 						elif self.vida >= 75 and self.vida <= 100:
 							self.vida += (100 - self.vida)
+
+					if sprite.nome == 'ammo':
+						sprite.kill()
+						self.ammo = 50
+      
+					if sprite.nome == 'pocao':
+						sprite.kill()
+						self.dano == self.dano*2
+      
 				elif sprite.hitbox.colliderect(self.hitbox) and sprite not in self.coletaveis :
 					if self.direction.x > 0: # moving right
 						self.hitbox.right = sprite.hitbox.left
@@ -114,6 +127,14 @@ class Player(pygame.sprite.Sprite):
 							self.vida += 25
 						elif self.vida >= 75 and self.vida <= 100:
 							self.vida += (100 - self.vida)
+
+					if sprite.nome == 'ammo':
+						sprite.kill()
+						self.pente = 50
+
+					if sprite.nome == 'pocao':
+						sprite.kill()
+						self.dano == self.dano*2
 						
 				elif sprite.hitbox.colliderect(self.hitbox) and sprite not in self.coletaveis :
 					if self.direction.y > 0: # moving down
@@ -127,12 +148,21 @@ class Player(pygame.sprite.Sprite):
 		self.move(self.speed)
 		self.get_status()
 		self.animar()
-		print(self.vida)
 		if self.cooldown_tiro < 30:
 			self.cooldown_tiro += 1
 		if self.cooldown_spawn_medkit < 1800:
 			self.cooldown_spawn_medkit += 1
+		if self.cooldown_spawn_ammo < 1200:
+			self.cooldown_spawn_ammo += 1
+		if self.cooldown_pot < 3600:
+			self.cooldown_pot += 1
 		if self.cooldown_spawn_medkit == 1800:
-			Level.spawn_coletaveis(self.group, self.obstacle_sprites, self.coletaveis, self.cooldown_spawn_medkit)
+			Level.spawn_coletaveis(self.group, self.obstacle_sprites, self.coletaveis, self.cooldown_spawn_medkit,self.cooldown_spawn_ammo,self.cooldown_pot)
 			self.cooldown_spawn_medkit = 0
+		elif self.cooldown_spawn_ammo == 1200:
+			Level.spawn_coletaveis(self.group, self.obstacle_sprites, self.coletaveis, self.cooldown_spawn_medkit,self.cooldown_spawn_ammo,self.cooldown_pot)
+			self.cooldown_spawn_ammo = 0
+		elif self.cooldown_pot == 3600:
+			Level.spawn_coletaveis(self.group, self.obstacle_sprites, self.coletaveis, self.cooldown_spawn_medkit,self.cooldown_spawn_ammo,self.cooldown_pot)
+			self.cooldown_pot = 0
 		
