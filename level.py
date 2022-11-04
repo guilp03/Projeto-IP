@@ -7,6 +7,7 @@ import zumbi
 from coletaveis import Coletaveis
 from coletaveis import Ammo
 from coletaveis import Pocao
+from coletaveis import Pistol
 from random import randint
 import constru
 import cerca
@@ -50,6 +51,9 @@ class Level:
 					constru.Trator((x,y),[self.visible_sprites,self.obstacle_sprites])
 				if col == 'ca':
 					constru.Casa((x,y),[self.visible_sprites,self.obstacle_sprites])
+				if col == 'pi':
+					Pistol((x,y),'pistol',self.visible_sprites, self.coletaveis, self.obstacle_sprites)
+				
 	def spawn_coletaveis(visible_sprites, obstacle_sprites, coletaveis, cooldown_medkit, cooldown_ammo, cooldown_pot):
 		lista_aux = ['medkit', 'nada', 'nada']
 		lista_aux_2 = ['ammo', 'nada', 'nada']

@@ -16,10 +16,10 @@ class Player(pygame.sprite.Sprite):
 		self.direction = pygame.math.Vector2()
 		self.speed = 6
 
+		self.arma = 'nada'
 		self.status = 'down'
 		self.frame_index = 0
 		self.animation_speed = 0.2
-		self.importar()
 
 		self.coletaveis = coletaveis
 		self.obstacle_sprites = obstacle_sprites
@@ -53,7 +53,7 @@ class Player(pygame.sprite.Sprite):
 		else:
 			self.direction.x = 0
 
-		if keys[pygame.K_p] and self.cooldown_tiro == 30:
+		if keys[pygame.K_p] and self.cooldown_tiro == 30 and self.arma == 'pistol':
 			self.cooldown_tiro = 0
 			DisparoArma((self.rect.x,self.rect.y), self.group, self.obstacle_sprites, self.status)
 		
@@ -64,12 +64,20 @@ class Player(pygame.sprite.Sprite):
 				self.status = self.status + '_idle'
 
 	def importar(self):
-		self.animations = {'up': ['../Projeto-IP/prota/prota_up_0.png', '../Projeto-IP/prota/prota_up_1.png', '../Projeto-IP/prota/prota_up_2.png'],
-							'down': ['../Projeto-IP/prota/prota_down_0.png', '../Projeto-IP/prota/prota_down_1.png', '../Projeto-IP/prota/prota_down_2.png'],
-							'left': ['../Projeto-IP/prota/prota_left_0.png', '../Projeto-IP/prota/prota_left_1.png', '../Projeto-IP/prota/prota_left_2.png'],
-							'right': ['../Projeto-IP/prota/prota_right_0.png', '../Projeto-IP/prota/prota_right_1.png', '../Projeto-IP/prota/prota_right_2.png'],
-							'up_idle': ['../Projeto-IP/prota/prota_idle_up.png'], 'down_idle': ['../Projeto-IP/prota/prota_idle_down.png'],
-							'left_idle': ['../Projeto-IP/prota/prota_idle_left.png'], 'right_idle': ['../Projeto-IP/prota/prota_idle_right.png']}
+		if self.arma == 'nada':
+			self.animations = {'up': ['../Projeto-IP/prota/prota_up_0.png', '../Projeto-IP/prota/prota_up_1.png', '../Projeto-IP/prota/prota_up_2.png'],
+								'down': ['../Projeto-IP/prota/prota_down_0.png', '../Projeto-IP/prota/prota_down_1.png', '../Projeto-IP/prota/prota_down_2.png'],
+								'left': ['../Projeto-IP/prota/prota_left_0.png', '../Projeto-IP/prota/prota_left_1.png', '../Projeto-IP/prota/prota_left_2.png'],
+								'right': ['../Projeto-IP/prota/prota_right_0.png', '../Projeto-IP/prota/prota_right_1.png', '../Projeto-IP/prota/prota_right_2.png'],
+								'up_idle': ['../Projeto-IP/prota/prota_idle_up.png'], 'down_idle': ['../Projeto-IP/prota/prota_idle_down.png'],
+								'left_idle': ['../Projeto-IP/prota/prota_idle_left.png'], 'right_idle': ['../Projeto-IP/prota/prota_idle_right.png']}
+		elif self.arma == 'pistol':
+			self.animations = {'up': ['../Projeto-IP/prota_pistol/prota_pistol_up_1.png', '../Projeto-IP/prota_pistol/prota_pistol_up_2.png', '../Projeto-IP/prota_pistol/prota_pistol_up_3.png'],
+								'down': ['../Projeto-IP/prota_pistol/prota_pistol_down_1.png', '../Projeto-IP/prota_pistol/prota_pistol_down_2.png', '../Projeto-IP/prota_pistol/prota_pistol_down_3.png'],
+								'left': ['../Projeto-IP/prota_pistol/prota_pistol_left_1.png', '../Projeto-IP/prota_pistol/prota_pistol_left_2.png', '../Projeto-IP/prota_pistol/prota_pistol_left_3.png'],
+								'right': ['../Projeto-IP/prota_pistol/prota_pistol_right_1.png', '../Projeto-IP/prota_pistol/prota_pistol_right_2.png', '../Projeto-IP/prota_pistol/prota_pistol_right_3.png'],
+								'up_idle': ['../Projeto-IP/prota_pistol/prota_pistol_up_1.png'], 'down_idle': ['../Projeto-IP/prota_pistol/prota_pistol_down_1.png'],
+								'left_idle': ['../Projeto-IP/prota_pistol/prota_pistol_left_1.png'], 'right_idle': ['../Projeto-IP/prota_pistol/prota_pistol_right_1.png']} 
 	
 	def animar(self):
 		animation = self.animations[self.status]
@@ -110,6 +118,9 @@ class Player(pygame.sprite.Sprite):
 					if sprite.nome == 'pocao':
 						sprite.kill()
 						self.dano == self.dano*2
+					if sprite.nome == 'pistol':
+						sprite.kill()
+						self.arma = 'pistol'
       
 				elif sprite.hitbox.colliderect(self.hitbox) and sprite not in self.coletaveis :
 					if self.direction.x > 0: # moving right
@@ -135,6 +146,9 @@ class Player(pygame.sprite.Sprite):
 					if sprite.nome == 'pocao':
 						sprite.kill()
 						self.dano == self.dano*2
+					if sprite.nome == 'pistol':
+						sprite.kill()
+						self.arma = 'pistol'
 						
 				elif sprite.hitbox.colliderect(self.hitbox) and sprite not in self.coletaveis :
 					if self.direction.y > 0: # moving down
@@ -145,6 +159,7 @@ class Player(pygame.sprite.Sprite):
 	def update(self):
 		from level import Level
 		self.input()
+		self.importar()
 		self.move(self.speed)
 		self.get_status()
 		self.animar()
