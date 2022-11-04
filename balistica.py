@@ -23,7 +23,6 @@ class DisparoArma(pygame.sprite.Sprite):
         self.count = False
 
     def direcao(self):
-        print(self.sentido)
         if self.sentido == 'up' or self.sentido == 'up_idle':
             self.direction.y = -1
             self.image = pygame.image.load('../Projeto-IP/tiro/tiro2_up.png').convert_alpha()
@@ -72,7 +71,6 @@ class DisparoArma(pygame.sprite.Sprite):
         self.move(self.speed)
         if self.count == True:
             self.index += self.animation_speed
-        print(self.index)
         if self.index >= 1.8:
                 self.index = 0
                 self.kill()
