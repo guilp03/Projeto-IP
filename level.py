@@ -33,7 +33,7 @@ class Level:
 				if col == 'z':
 					self.zumbi = zumbi.Zumbi('boomer',(x,y),[self.visible_sprites],self.player,self.obstacle_sprites)
 				if col == 'c':
-					Coletaveis((x,y),self.visible_sprites, self.coletaveis, self.obstacle_sprites )
+					Coletaveis((x,y),'medkit',self.visible_sprites, self.coletaveis, self.obstacle_sprites )
 	def spawn_coletaveis(visible_sprites, obstacle_sprites, coletaveis, cooldown):
 		lista_aux = ['medkit', 'nada', 'nada', 'nada']
 		if cooldown == 1800:
@@ -45,7 +45,7 @@ class Level:
 						index = randint(0, len(lista_aux) - 1)
 						criado = lista_aux[index]
 						if criado == 'medkit':
-							Coletaveis((x,y),visible_sprites, coletaveis, obstacle_sprites )
+							Coletaveis((x,y), 'medkit', visible_sprites, coletaveis, obstacle_sprites )
 							lista_aux.remove('medkit')
 						else:
 							lista_aux.remove('nada')
