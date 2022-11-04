@@ -35,6 +35,17 @@ class UI():
     def show_bar(self,current,max_amount, bg_rect, color):
         #draw bg
         pg.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
+
+        # convert stat to pixel
+        ratio = current / max_amount
+        current_largura = bg_rect.largura * ratio
+        current_rect = bg_rect.largura.copy()
+        current_rect.largura = current_largura
+
+        #drawing the bar
+        pg.draw.rect(self.display_surface,color, current_rect)
+
+
     def display(self,player):
         self.show_bar(self.player.vida, 100, self.health_bar_rect, HEALTH_COLOR)
         self.show_bar(self.player.pente, 100, self.ammo_bar_rect, AMMO_COLOR)
