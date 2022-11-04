@@ -4,7 +4,7 @@ from level import Level
 
 class Game:
 	def __init__(self):
-		  
+		
 		# general setup
 		pygame.init()
 		self.screen = pygame.display.set_mode((1280,720))
@@ -18,8 +18,7 @@ class Game:
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					pygame.quit()
-					sys.exit()
-                
+					sys.exit()    
 			self.screen.fill('#3f301d')
 			self.level.run()
 			pygame.display.update()

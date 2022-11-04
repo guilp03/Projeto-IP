@@ -6,6 +6,7 @@ from Player import Player
 import zumbi
 from coletaveis import Coletaveis
 from random import randint
+from ui import UI
 
 class Level:
 	def __init__(self):
@@ -17,6 +18,7 @@ class Level:
 		self.visible_sprites = CameraGroup()
 		self.obstacle_sprites = pygame.sprite.Group()
 		self.coletaveis = pygame.sprite.Group()
+		self.ui = UI()
 
 		# sprite setup
 		self.create_map()
@@ -34,6 +36,7 @@ class Level:
 					self.zumbi = zumbi.Zumbi('boomer',(x,y),[self.visible_sprites],self.player,self.obstacle_sprites)
 				if col == 'c':
 					Coletaveis((x,y),self.visible_sprites, self.coletaveis, self.obstacle_sprites )
+
 	def spawn_coletaveis(visible_sprites, obstacle_sprites, coletaveis, cooldown):
 		lista_aux = ['medkit', 'nada', 'nada', 'nada']
 		if cooldown == 1800:
@@ -50,12 +53,11 @@ class Level:
 						else:
 							lista_aux.remove('nada')
 
-        
-        
 	def run(self):
 		# update and draw the game
 		self.visible_sprites.custom_draw(self.player)
 		self.visible_sprites.update()
+		self.ui.display(self.player)
 
 
 class CameraGroup(pygame.sprite.Group):
