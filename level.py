@@ -6,6 +6,9 @@ from Player import Player
 import zumbi
 from coletaveis import Coletaveis
 from random import randint
+from coletaveis import Coletaveis
+import constru
+import cerca
 
 class Level:
 	def __init__(self):
@@ -27,13 +30,24 @@ class Level:
 				x = col_index * TILESIZE
 				y = row_index * TILESIZE
 				if col == 'x':
-					Tile((x,y),[self.visible_sprites,self.obstacle_sprites])
+					cerca.Cerca((x,y),[self.visible_sprites,self.obstacle_sprites])
+				if col == 'x1':
+					cerca.Cerca1((x,y),[self.visible_sprites,self.obstacle_sprites])
+				if col == 'x2':
+					cerca.Cerca2((x,y),[self.visible_sprites,self.obstacle_sprites])
+				
 				if col == 'p':
 					self.player = Player((x,y),[self.visible_sprites],self.obstacle_sprites, self.coletaveis)
 				if col == 'z':
 					self.zumbi = zumbi.Zumbi('boomer',(x,y),[self.visible_sprites],self.player,self.obstacle_sprites)
-				if col == 'c':
+				if col == 'm':
 					Coletaveis((x,y),'medkit',self.visible_sprites, self.coletaveis, self.obstacle_sprites )
+				if col == 'ce':
+					constru.Celeiro((x,y),[self.visible_sprites,self.obstacle_sprites])
+				if col == 't':
+					constru.Trator((x,y),[self.visible_sprites,self.obstacle_sprites])
+				if col == 'ca':
+					constru.Casa((x,y),[self.visible_sprites,self.obstacle_sprites])
 	def spawn_coletaveis(visible_sprites, obstacle_sprites, coletaveis, cooldown):
 		lista_aux = ['medkit', 'nada', 'nada', 'nada']
 		if cooldown == 1800:
@@ -65,10 +79,25 @@ class CameraGroup(pygame.sprite.Group):
         self.half_width = self.display_surface.get_size()[0] // 2
         self.half_height = self.display_surface.get_size()[1] // 2
         self.offset = pygame.math.Vector2()
+		#parte do chao esta funcionando agr so falta a imagem certa
+		#criando o chao
+        self.floor_surf = pygame.image.load('map_IP_cop.png')
+        self.floor_rect = self.floor_surf.get_rect(topleft=(-850,-550))
+		
+
 
     def custom_draw(self,player):
         self.offset.x = player.rect.centerx - self.half_width
         self.offset.y = player.rect.centery - self.half_height
+		#desenhando o chao
+        self.floor_offset_pos = self.floor_rect.topleft - self.offset
+        self.display_surface.blit(self.floor_surf, self.floor_offset_pos)
+		
+		
+
+		
+
+	
 
         # for sprite in self.sprites():
         for sprite in sorted(self.sprites(),key = lambda sprite: sprite.rect.centery):
