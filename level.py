@@ -43,7 +43,7 @@ class Level:
 				if col == 'x2':
 					cerca.Cerca2((x,y),[self.visible_sprites,self.obstacle_sprites])
 				if col == 'p':
-					self.player = Player((x,y),[self.visible_sprites, self.colisao_player],self.obstacle_sprites, self.coletaveis, self.colisao_zumbi, self.bala)
+					self.player = Player((x,y),self.visible_sprites, self.colisao_player,self.obstacle_sprites, self.coletaveis, self.colisao_zumbi, self.bala)
 				if col == 'z':
 					self.zumbi = zumbi.Zumbi('boomer',(x,y),[self.visible_sprites, self.colisao_zumbi],self.player,self.obstacle_sprites, self.colisao_player)
 				if col == 'me':

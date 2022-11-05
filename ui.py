@@ -28,7 +28,7 @@ class UI():
         self.font =pg.font.Font(UI_FONT,UI_FONT_SIZE)
 
         #bar setup
-        self.health_bar_rect = pg.Rect(10,10,HEALTH_BAR_LARGURA,BAR_ALTURA)
+        self.health_bar_rect = pg.Rect(20,10,HEALTH_BAR_LARGURA,BAR_ALTURA)
         self.ammo_bar_rect = pg.Rect(10,10,AMMO_BAR_LARGURA,BAR_ALTURA)
 
 
@@ -38,16 +38,19 @@ class UI():
 
         # convert stat to pixel
         ratio = current / max_amount
-        current_largura = bg_rect.largura * ratio
-        current_rect = bg_rect.largura.copy()
-        current_rect.largura = current_largura
+        current_width = bg_rect.width * ratio
+        current_rect = bg_rect.copy()
+        current_rect.width = current_width
 
         #drawing the bar
         pg.draw.rect(self.display_surface,color, current_rect)
         pg.draw.rect(self.display_surface, UI_BORDER_COLLOR, current_rect, 3)
 
+    #def show_exp
 
     def display(self,player):
         self.show_bar(self.player.vida, 100, self.health_bar_rect, HEALTH_COLOR)
-        self.show_bar(self.player.pente, 100, self.ammo_bar_rect, AMMO_COLOR)
+        #self.show_bar(self.player.pente, 100, self.ammo_bar_rect, AMMO_COLOR)
         #pg.draw.rect(self.display_surface, 'black', self.health_bar_rect)
+
+        #self.show_exp()

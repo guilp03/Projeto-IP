@@ -3,8 +3,8 @@ from balistica import DisparoArma
 from mapa import *
 
 class Player(pygame.sprite.Sprite):
-	def __init__(self,pos,groups,obstacle_sprites, coletaveis, zumbi, bala):
-		super().__init__(groups)
+	def __init__(self,pos,visible_sprites, colisao_player,obstacle_sprites, coletaveis, zumbi, bala):
+		super().__init__(visible_sprites, colisao_player)
 		self.vida = 80
 		self.dano = 40
 		self.pente = 50
@@ -12,7 +12,7 @@ class Player(pygame.sprite.Sprite):
 		self.rect = self.image.get_rect(topleft = pos)
 		self.hitbox = self.rect.inflate(0, -10)
 		self.cooldown_tiro = 30
-
+		self.visible_sprites, self.colisao_player = visible_sprites, colisao_player
 		self.direction = pygame.math.Vector2()
 		self.speed = 6
 
@@ -23,7 +23,6 @@ class Player(pygame.sprite.Sprite):
 
 		self.coletaveis = coletaveis
 		self.obstacle_sprites = obstacle_sprites
-		self.group = groups
 		self.zumbi = zumbi
 		self.bala = bala
 
@@ -57,7 +56,7 @@ class Player(pygame.sprite.Sprite):
 
 		if keys[pygame.K_p] and self.cooldown_tiro == 30 and self.arma == 'pistol':
 			self.cooldown_tiro = 0
-			DisparoArma((self.rect.x,self.rect.y), [self.group, self.bala], self.obstacle_sprites, self.status, self.zumbi)
+			DisparoArma((self.rect.x,self.rect.y), [self.visible_sprites, self.bala], self.obstacle_sprites, self.status, self.zumbi)
 		
 
 	def get_status(self):
@@ -189,12 +188,12 @@ class Player(pygame.sprite.Sprite):
 		if self.cooldown_pot < 3600:
 			self.cooldown_pot += 1
 		if self.cooldown_spawn_medkit == 1800:
-			Level.spawn_coletaveis(self.group, self.obstacle_sprites, self.coletaveis, self.cooldown_spawn_medkit,self.cooldown_spawn_ammo,self.cooldown_pot)
+			Level.spawn_coletaveis(self.visible_sprites, self.obstacle_sprites, self.coletaveis, self.cooldown_spawn_medkit,self.cooldown_spawn_ammo,self.cooldown_pot)
 			self.cooldown_spawn_medkit = 0
 		elif self.cooldown_spawn_ammo == 1200:
-			Level.spawn_coletaveis(self.group, self.obstacle_sprites, self.coletaveis, self.cooldown_spawn_medkit,self.cooldown_spawn_ammo,self.cooldown_pot)
+			Level.spawn_coletaveis(self.visible_sprites, self.obstacle_sprites, self.coletaveis, self.cooldown_spawn_medkit,self.cooldown_spawn_ammo,self.cooldown_pot)
 			self.cooldown_spawn_ammo = 0
 		elif self.cooldown_pot == 3600:
-			Level.spawn_coletaveis(self.group, self.obstacle_sprites, self.coletaveis, self.cooldown_spawn_medkit,self.cooldown_spawn_ammo,self.cooldown_pot)
+			Level.spawn_coletaveis(self.visible_sprites, self.obstacle_sprites, self.coletaveis, self.cooldown_spawn_medkit,self.cooldown_spawn_ammo,self.cooldown_pot)
 			self.cooldown_pot = 0
 		
