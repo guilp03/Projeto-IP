@@ -13,7 +13,7 @@ class Game:
 		self.level = Level()
 	
 	def exibe_mensagem (self, texto, tamanho, cor, x, y):
-		fonte = pygame.font.SysFont('comicsansms', tamanho, cor)
+		fonte = pygame.font.SysFont('arialblack', tamanho, cor)
 		mensagem = f'{texto}'
 		texto_formatado = fonte.render(mensagem, True, cor)
 		texto_rect = texto_formatado.get_rect()
@@ -22,7 +22,8 @@ class Game:
 		return texto_formatado
 
 	def mostrar_tela_start(self):
-		self.exibe_mensagem('Pressione qualquer tecla', 40, '#ff0000', 640, 360)
+		self.screen.fill('#3f301d')
+		self.exibe_mensagem('Pressione qualquer tecla', 40, '#ff0000', 640, 300)
 		pygame.display.flip()
 		self.espera()
 
@@ -37,7 +38,7 @@ class Game:
 					sys.exit()
 				if event.type == pygame.KEYUP:
 					esperando = False
-					self.game.run()
+					
 
 	def run(self):
 		while True:
@@ -46,9 +47,9 @@ class Game:
 					pygame.quit()
 					sys.exit()    
 			
-			self.screen.fill('#3f301d')
-			game_over = self.exibe_mensagem('GAME OVER',40,'#ff0000')
-			self.screen.blit(game_over, (530,50))
+			if self.level.player.vida<=0:
+				self.exibe_mensagem('GAME OVER',60,'#ff0000', 640, 300)
+				pygame.display.flip()
 			self.level.run()
 			pygame.display.update()
 			self.clock.tick(FPS)
@@ -57,3 +58,4 @@ class Game:
 if __name__ == '__main__':
 	game = Game()
 	game.mostrar_tela_start()
+	game.run()
