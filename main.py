@@ -13,7 +13,7 @@ class Game:
 		self.level = Level()
 	
 	def exibe_mensagem (self, texto, tamanho, cor, x, y):
-		fonte = pygame.font.SysFont('arialblack', tamanho, cor)
+		fonte = pygame.font.Font('../PROJETO-IP/HUD/font/Upheaval.fon', tamanho)
 		mensagem = f'{texto}'
 		texto_formatado = fonte.render(mensagem, True, cor)
 		texto_rect = texto_formatado.get_rect()
@@ -54,8 +54,15 @@ class Game:
 			pygame.display.update()
 			self.clock.tick(FPS)
 			
+			# MOSTRAR A INTERFACE
+			#self.display_surface = pygame.display.get_surface()
+			#self.UI_main = pygame.image.load('../Projeto-IP/HUD/HUD_main.png').convert_alpha()
+			#self.display_surface.blit(self.UI_main,(0,0))
+			#pygame.display.flip()
+			
 
 if __name__ == '__main__':
 	game = Game()
+	
 	game.mostrar_tela_start()
 	game.run()
