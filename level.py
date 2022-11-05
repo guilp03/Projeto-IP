@@ -9,6 +9,7 @@ from coletaveis import Ammo
 from coletaveis import Pocao
 from coletaveis import Pistol
 from random import randint
+from ui import UI
 import constru
 import cerca
 
@@ -28,6 +29,7 @@ class Level:
 
 		# sprite setup
 		self.create_map()
+		self.ui = UI(self.player)
 
 	def create_map(self):
 		for row_index,row in enumerate(WORLD_MAP):
@@ -94,12 +96,11 @@ class Level:
 					if col == 'pot':
 						Pocao((x,y), 'pocao', visible_sprites, coletaveis, obstacle_sprites )
 
-        
-        
 	def run(self):
 		# update and draw the game
 		self.visible_sprites.custom_draw(self.player)
 		self.visible_sprites.update()
+		self.ui.display(self.player)
 
 
 class CameraGroup(pygame.sprite.Group):

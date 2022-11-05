@@ -3,7 +3,7 @@ from mapa import *
 from level import Level
 class Game:
 	def __init__(self):
-		  
+		
 		# general setup
 		pygame.init()
 		self.screen = pygame.display.set_mode((1280,720))
