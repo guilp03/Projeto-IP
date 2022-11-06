@@ -13,7 +13,7 @@ class Game:
 		self.level = Level()
 	
 	def exibe_mensagem (self, texto, tamanho, cor, x, y):
-		fonte = pygame.font.Font('../PROJETO-IP/HUD/font/Upheaval.fon', tamanho)
+		fonte = pygame.font.SysFont('arialblack', tamanho)
 		mensagem = f'{texto}'
 		texto_formatado = fonte.render(mensagem, True, cor)
 		texto_rect = texto_formatado.get_rect()
