@@ -11,33 +11,43 @@ class Game:
 		self.clock = pygame.time.Clock()
 
 		self.level = Level()
-	
+
 	def exibe_mensagem (self, texto, tamanho, cor, x, y):
 		fonte = pygame.font.Font('../PROJETO-IP/HUD/font/UpheavalPro.ttf', tamanho)
 		mensagem = f'{texto}'
 		texto_formatado = fonte.render(mensagem, True, cor)
+		#retângulo para a "caixa de texto"
 		texto_rect = texto_formatado.get_rect()
+		#posição da mensagem (referenciais x e y no meio da caixa de texto)
 		texto_rect.midtop = (x, y)
+		#printando a mensagem na tela
 		self.screen.blit(texto_formatado, texto_rect)
 		return texto_formatado
 
 	def mostrar_tela_start(self):
+		#preenche a tela na cor preta
 		self.screen.fill('#000000')
+		#printa as mensagens
 		self.exibe_mensagem('Press any key to start', 40, '#ff0000', 640, 400)
 		self.exibe_mensagem('Regular Zombie Game', 72, '#ff0000',640,200)
+		#mantém sempre printando
 		pygame.display.flip()
+		#chama a função "sala de espera"
 		self.espera()
 
 	def espera(self):
 		esperando = True
 		while esperando:
+			#define o 60 ticks por segundo
 			self.clock.tick(FPS)
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
+					#se clicar em fechar, termina a função 'espera' e fecha o jogo
 					esperando = False
 					pygame.quit()
 					sys.exit()
 				if event.type == pygame.KEYUP:
+					#se apertar qualquer tecla, termina a função espera
 					esperando = False
 					
 
