@@ -1,11 +1,12 @@
 import pygame
 
 
-
+#cria a classe do projetil
 class DisparoArma(pygame.sprite.Sprite):
     """'CLASSE PRARA IMPLEMENTAR O PROJETIL QUE VAI SER DISPARADO PELA ARMA'"""
     def __init__(self, pos, groups, obstacle_sprites, status, colisao_zumbi):
         super().__init__(groups)
+        #infos basicas do projetil
         self.image = pygame.image.load('../Projeto-IP/tiro/tiro_right.png').convert_alpha()
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(0,0)
@@ -24,7 +25,9 @@ class DisparoArma(pygame.sprite.Sprite):
 							'left_idle': ['../Projeto-IP/tiro/tiro3_left.png', '../Projeto-IP/tiro/tiro4_left.png'], 'right_idle': ['../Projeto-IP/tiro/tiro3_right.png', '../Projeto-IP/tiro/tiro4_right.png']}
         self.count = False
 
+
     def direcao(self):
+        #define a direcao do projetil
         if self.sentido == 'up' or self.sentido == 'up_idle':
             self.direction.y = -1
             self.image = pygame.image.load('../Projeto-IP/tiro/tiro2_up.png').convert_alpha()
@@ -40,6 +43,7 @@ class DisparoArma(pygame.sprite.Sprite):
 
 
     def move(self,speed):
+        #atualiza a hitbox de acordo com o movimento
         if self.direction.magnitude() != 0:
             self.direction = self.direction.normalize()
         self.hitbox.x += self.direction.x * speed
@@ -50,10 +54,12 @@ class DisparoArma(pygame.sprite.Sprite):
 		
 
     def collision(self,direction):
+        #implementa a animacao do projetil
         animation = self.animations[self.sentido]
         if direction == 'horizontal':
             for sprite in self.obstacle_sprites:
                 if sprite.hitbox.colliderect(self.hitbox):
+                    #define a colisao do projetil com o terreno
                     self.direction.x = 0
                     self.direction.y = 0
                     self.image = pygame.image.load(animation[int(self.index)]).convert_alpha()
@@ -61,6 +67,7 @@ class DisparoArma(pygame.sprite.Sprite):
 
             for sprite in self.zumbi:
                 if sprite.hitbox.colliderect(self.hitbox):
+                    #define a colisao do projetil com o terreno
                     self.direction.y = 0
                     self.direction.x = 0
                     self.image = pygame.image.load(animation[int(self.index)]).convert_alpha()
@@ -69,6 +76,7 @@ class DisparoArma(pygame.sprite.Sprite):
         if direction == 'vertical':
             for sprite in self.obstacle_sprites:
                 if sprite.hitbox.colliderect(self.hitbox):
+                    #define a colisao do projetil com o terreno
                     self.direction.y = 0
                     self.direction.x = 0
                     self.image = pygame.image.load(animation[int(self.index)]).convert_alpha()
@@ -76,12 +84,15 @@ class DisparoArma(pygame.sprite.Sprite):
             
             for sprite in self.zumbi:
                 if sprite.hitbox.colliderect(self.hitbox):
+                    #define a colisao do projetil com o terreno
                     self.direction.y = 0
                     self.direction.x = 0
                     self.image = pygame.image.load(animation[int(self.index)]).convert_alpha()
                     self.count = True
 
+
     def update(self):
+        #atualiza os dados e exclui a bala do mundo apos uma animacao
         if self.count == False:
             self.direcao()
         self.move(self.speed)

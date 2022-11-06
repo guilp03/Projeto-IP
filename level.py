@@ -33,11 +33,16 @@ class Level:
 		self.create_map()
 		self.ui = zumbi.UI(self.player)
 
+
 	def create_map(self):
+     #criando o mapa
 		for row_index,row in enumerate(WORLD_MAP):
+      #traduz as linhas do mapa em numeros
 			for col_index, col in enumerate(row):
+       #traduz as colunas do mapa em numeros
 				x = col_index * TILESIZE
 				y = row_index * TILESIZE
+		#verifica cada coluna e linha para colocar cada objeto em seu devido lugar
 				if col == 'x':
 					cerca.Cerca((x,y),[self.visible_sprites,self.obstacle_sprites])
 				if col == 'x1':
@@ -58,8 +63,12 @@ class Level:
 					constru.Casa((x,y),[self.visible_sprites,self.obstacle_sprites])
 				if col == 'pi':
 					Pistol((x,y),'pistol',self.visible_sprites, self.coletaveis, self.obstacle_sprites)
-				
+			
+   	
 	def spawn_coletaveis(visible_sprites, obstacle_sprites, coletaveis, cooldown_medkit, cooldown_ammo, cooldown_pot):
+     #funcao para spawn de coletaveis em locais aleatorios do mapa periodicamente
+     #utiliza-se essas listas para auxiliar na aleatoriedade da ocorrencia dos spawns
+     #os cooldowns de cada coletavel dizem respeito a quanto tempo eles demoram para aparecer no jogo
 		lista_aux = ['medkit', 'nada', 'nada']
 		lista_aux_2 = ['ammo', 'nada', 'nada']
 		if cooldown_medkit == 1800:
@@ -67,6 +76,7 @@ class Level:
 				for col_index, col in enumerate(row):
 					x = col_index * TILESIZE
 					y = row_index * TILESIZE
+					#usa-se os 3 spawns disponiveis do mapa para criar nada ou o item, utiliza-se a a funcao randint para isso
 					if col == 'm':
 						index = randint(0, len(lista_aux) - 1)
 						criado = lista_aux[index]
@@ -75,6 +85,7 @@ class Level:
 							lista_aux.remove('medkit')
 						else:
 							lista_aux.remove('nada')
+       #fazemos a mesma coisa para as municoes
 		if cooldown_ammo == 1200:
 			for row_index,row in enumerate(WORLD_MAP):
 				for col_index, col in enumerate(row):
@@ -88,6 +99,7 @@ class Level:
 							lista_aux_2.remove('ammo')
 						else:
 							lista_aux_2.remove('nada')
+       #a pocao aparece sempre no mesmo local
 		if cooldown_pot == 3600:
 			for row_index,row in enumerate(WORLD_MAP):
 				for col_index, col in enumerate(row):
@@ -95,9 +107,14 @@ class Level:
 					y = row_index * TILESIZE
 					if col == 'pot':
 						Pocao((x,y), 'pocao', visible_sprites, coletaveis, obstacle_sprites )
+      
+      
 	def spawn_zombies(self):
+     #funcao para spawnar os zumbis
 		lista_aux= []
+	#lista com os tipos de zumbis
 		lista_zumbi = ['normal', 'zumbinho', 'boomer']
+	#os primeros zumbis nascem com 10 segundos de jogo iniciado
 		if self.time >= 600 and self.first_spawn == True:
 			for row_index,row in enumerate(WORLD_MAP):
 					for col_index, col in enumerate(row):
@@ -105,6 +122,7 @@ class Level:
 						y = row_index * TILESIZE
 						if col == 'z':
 							lista_aux.append((x,y))
+	#a variavel hordas define quantos zumbis serao adicionados,uma lista de spawns e feita a partir do mapa e sao sorteados alguns para os zumbis nascerem
 			for i in range(0, self.hordas * 3):
 				numero = randint(0, len(lista_aux) -1 )
 				pos = lista_aux[numero]
@@ -114,6 +132,7 @@ class Level:
 			self.time = 0
 			self.hordas += 1
 			self.first_spawn = False
+   #os nascimentos subsequentes sao feitos a cada 30 segundos, sempre adicionando mais 5 segundos de intervalo para o jogador ter mais tempo de matar os zumbis
 		elif self.time >= 1800 + self.cooldown:
 			for row_index,row in enumerate(WORLD_MAP):
 					for col_index, col in enumerate(row):
@@ -128,10 +147,10 @@ class Level:
 				aux = randint(0, 2)
 				tipo_zumbi = lista_zumbi[aux]
 				self.zumbi = zumbi.Zumbi(f'{tipo_zumbi}',pos,[self.visible_sprites, self.colisao_zumbi],self.player,self.obstacle_sprites, self.colisao_player)
-						
+	#time diz respeito ao tempo passado desde o ultimo nascimento, hordas ao numero de nascimentos ja feitos(isso define quantos zumbis vao spawnar) e cooldown serve para aumentar o intervaloe entre nascimentos			
 			self.time = 0
 			self.hordas += 1
-			self.cooldown += 100
+			self.cooldown += 300
 					
 
 	def run(self):
@@ -156,7 +175,6 @@ class CameraGroup(pygame.sprite.Group):
         self.floor_rect = self.floor_surf.get_rect(topleft=(-850,-550))
 		
 
-
     def custom_draw(self,player):
         self.offset.x = player.rect.centerx - self.half_width
         self.offset.y = player.rect.centery - self.half_height
@@ -165,11 +183,6 @@ class CameraGroup(pygame.sprite.Group):
         self.display_surface.blit(self.floor_surf, self.floor_offset_pos)
 		
 		
-
-		
-
-	
-
         # for sprite in self.sprites():
         for sprite in sorted(self.sprites(),key = lambda sprite: sprite.rect.centery):
             offset_pos = sprite.rect.topleft - self.offset
