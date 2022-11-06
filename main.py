@@ -1,9 +1,9 @@
 import pygame, sys
 from mapa import *
 from level import Level
+
 class Game:
 	def __init__(self):
-		
 		# general setup
 		pygame.init()
 		self.screen = pygame.display.set_mode((1280,720))
@@ -11,6 +11,7 @@ class Game:
 		self.clock = pygame.time.Clock()
 
 		self.level = Level()
+
 
 	def exibe_mensagem (self, texto, tamanho, cor, x, y):
 		fonte = pygame.font.Font('../PROJETO-IP/HUD/font/UpheavalPro.ttf', tamanho)
@@ -23,6 +24,7 @@ class Game:
 		#printando a mensagem na tela
 		self.screen.blit(texto_formatado, texto_rect)
 		return texto_formatado
+
 
 	def mostrar_tela_start(self):
 		#preenche a tela na cor preta
@@ -48,31 +50,45 @@ class Game:
 					pygame.quit()
 					sys.exit()
 				if event.type == pygame.KEYUP:
-					#se apertar qualquer tecla, termina a função espera
+					#se apertar qualquer tecla, termina a função espera e abre o jogo, pois também finaliza a função 'mostrar_tela_start'
 					esperando = False
-					
 
+
+	#função que roda o jogo
 	def run(self):
 		while True:
 			for event in pygame.event.get():
+
 				if event.type == pygame.QUIT:
+					#se clicar em fechar, fecha o jogo
 					pygame.quit()
 					sys.exit()    
+
 			if self.level.player.vida<=0:
+				#se o player ficar com vida 0 ou menos, chama a função de exibir a mensagem, e exibe 'game over'
 				self.exibe_mensagem('GAME OVER',60,'#ff0000', 640, 300)
+				#mantém exibindo 'game over'
 				pygame.display.flip()
+				
 				for event in pygame.event.get():
 					if event.type == pygame.QUIT:
+						#se clicar em fechar, fecha o jogo
 						pygame.quit()
-						sys.exit()    
-
+						sys.exit()
+			
 			else:
+				#roda a função que executa o jogo
 				self.level.run()
+				#atualiza a tela
 				pygame.display.update()
+				#frequência de atualização em 60 ticks por segundo
 				self.clock.tick(FPS)
-			
-			
+
+
 if __name__ == '__main__':
+	#coloca a classe Game como uma variável
 	game = Game()
+	#abre o menu inicial
 	game.mostrar_tela_start()
+	#abre o jogo em si
 	game.run()
