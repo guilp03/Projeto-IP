@@ -121,7 +121,7 @@ class Level:
 						y = row_index * TILESIZE
 						if col == 'z':
 							lista_aux.append((x,y))
-			print(lista_aux)
+
 			for i in range(0, self.hordas * 3):
 				numero = randint(0, len(lista_aux) -1 )
 				pos = lista_aux[numero]
@@ -138,8 +138,6 @@ class Level:
 		# update and draw the game
 		self.time += 1
 		self.spawn_zombies()
-		if self.time % 100 == 0:
-			print(self.time)
 		self.visible_sprites.custom_draw(self.player)
 		self.visible_sprites.update()
 		self.ui.display(self.player)

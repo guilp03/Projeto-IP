@@ -151,7 +151,6 @@ class Zumbi(pygame.sprite.Sprite):
                     if self.hp <= 0:
                         self.kill()
                         mortes+=1
-                        print(mortes)
     def count(self):
         return self.mortes
     def update(self):
@@ -168,8 +167,8 @@ BAR_ALTURA = 20
 HEALTH_BAR_LARGURA = 200
 AMMO_BAR_LARGURA = 200
 ITEM_BOX_SIDE = 80
-UI_FONT = '../PROJETO-IP/HUD/font/Upheaval.fon'
-UI_FONT_SIZE = 80
+UI_FONT = '../PROJETO-IP/HUD/font/UpheavalPro.ttf'
+UI_FONT_SIZE = 36
 
 
 #cores gerais
@@ -210,7 +209,7 @@ class UI():
     
     def show_morte_zumbi(self, qtd_mortes):
         text_surf = self.font.render(str(int(qtd_mortes)),False,TEXT_COLOR)
-        x, y = 30, 2 * BAR_ALTURA + 50
+        x, y = 40, 2 * BAR_ALTURA + 50
         text_rect = text_surf.get_rect(bottomright = (x,y))
         
         pygame.draw.rect(self.display_surface,UI_BG_COLOR,text_rect.inflate(15,5))
@@ -219,5 +218,4 @@ class UI():
     def display(self,player):
         self.show_bar(self.player.vida, 100, self.health_bar_rect, HEALTH_COLOR)
         self.show_bar(self.player.pente, 30, self.ammo_bar_rect, AMMO_COLOR)
-        print(str(mortes)+'*')
         self.show_morte_zumbi(mortes)

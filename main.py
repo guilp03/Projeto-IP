@@ -13,7 +13,7 @@ class Game:
 		self.level = Level()
 	
 	def exibe_mensagem (self, texto, tamanho, cor, x, y):
-		fonte = pygame.font.Font('../PROJETO-IP/HUD/font/Upheaval.fon', tamanho)
+		fonte = pygame.font.Font('../PROJETO-IP/HUD/font/UpheavalPro.ttf', tamanho)
 		mensagem = f'{texto}'
 		texto_formatado = fonte.render(mensagem, True, cor)
 		texto_rect = texto_formatado.get_rect()
@@ -23,7 +23,8 @@ class Game:
 
 	def mostrar_tela_start(self):
 		self.screen.fill('#000000')
-		self.exibe_mensagem('Pressione qualquer tecla', 40, '#ff0000', 640, 300)
+		self.exibe_mensagem('Press any key to start', 40, '#ff0000', 640, 400)
+		self.exibe_mensagem('Regular Zombie Game', 72, '#ff0000',640,200)
 		pygame.display.flip()
 		self.espera()
 
@@ -46,13 +47,18 @@ class Game:
 				if event.type == pygame.QUIT:
 					pygame.quit()
 					sys.exit()    
-			
 			if self.level.player.vida<=0:
 				self.exibe_mensagem('GAME OVER',60,'#ff0000', 640, 300)
 				pygame.display.flip()
-			self.level.run()
-			pygame.display.update()
-			self.clock.tick(FPS)
+				for event in pygame.event.get():
+					if event.type == pygame.QUIT:
+						pygame.quit()
+						sys.exit()    
+
+			else:
+				self.level.run()
+				pygame.display.update()
+				self.clock.tick(FPS)
 			
 			# MOSTRAR A INTERFACE
 			#self.display_surface = pygame.display.get_surface()

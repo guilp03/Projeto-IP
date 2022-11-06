@@ -54,7 +54,7 @@ class Player(pygame.sprite.Sprite):
 		else:
 			self.direction.x = 0
 
-		if keys[pygame.K_p] and self.cooldown_tiro == 30 and self.arma == 'pistol':
+		if keys[pygame.K_p] and self.cooldown_tiro == 30 and self.arma == 'pistol' and self.pente>0:
 			self.cooldown_tiro = 0
 			self.pente-=1
 			DisparoArma((self.rect.x,self.rect.y), [self.visible_sprites, self.bala], self.obstacle_sprites, self.status, self.zumbi)
