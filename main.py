@@ -35,6 +35,7 @@ class Game:
 		#chama a função "sala de espera"
 		self.espera()
 
+
 	def espera(self):
 		esperando = True
 		while esperando:
@@ -70,13 +71,7 @@ class Game:
 				pygame.display.update()
 				self.clock.tick(FPS)
 			
-			# MOSTRAR A INTERFACE
-			#self.display_surface = pygame.display.get_surface()
-			#self.UI_main = pygame.image.load('../Projeto-IP/HUD/HUD_main.png').convert_alpha()
-			#self.display_surface.blit(self.UI_main,(0,0))
-			#pygame.display.flip()
 			
-
 if __name__ == '__main__':
 	game = Game()
 	game.mostrar_tela_start()

@@ -27,14 +27,15 @@ class Zumbi(pygame.sprite.Sprite):
         self.frame_index = 0
         self.importar()
 
+        #informacao para a morte do zumbi
         self.mortes = 0
         self.colisao_player = colisao_player
         self.obstacle_sprites = obstacle_sprites
         self.cooldown_dano = 2
 
-        #movimentacao ainda em experimentacao
-    def zombie_move(self): 
 
+    def zombie_move(self): 
+        #movimentacao do zumbi, que se move de acordo com a localizacao do player
         if self.rect.y > self.player.rect.y:
             self.direction.y = -1
             self.status = 'up'
@@ -53,13 +54,16 @@ class Zumbi(pygame.sprite.Sprite):
         else:
             self.direction.x = 0
 
+
     def get_status(self):
+        #funcao para diferenciar quando o zumbi se movimenta e quando esta parado
         if self.direction.x == 0 and self.direction.y == 0:
             if not 'idle' in self.status:
                 self.status = self.status + '_idle'
                 
         
     def importar(self):
+        #funcao que seleciona o banco de sprites para o zumbi de acordo com seu tipo
         if self.tipo_zumbi == 'boomer':
             self.animations = {'up': ['../Projeto-IP/boomer/boomer_up_0.png', '../Projeto-IP/boomer/boomer_up_1.png', '../Projeto-IP/boomer/boomer_up_2.png'], 'down': ['../Projeto-IP/boomer/boomer_down_0.png', '../Projeto-IP/boomer/boomer_down_1.png', '../Projeto-IP/boomer/boomer_down_2.png'], 
                             'left': ['../Projeto-IP/boomer/boomer_left_0.png', '../Projeto-IP/boomer/boomer_left_1.png', '../Projeto-IP/boomer/boomer_left_2.png'], 'right': ['../Projeto-IP/boomer/boomer_right_0.png', '../Projeto-IP/boomer/boomer_right_1.png', '../Projeto-IP/boomer/boomer_right_2.png'], 
@@ -75,17 +79,22 @@ class Zumbi(pygame.sprite.Sprite):
                             'left': ['../Projeto-IP/zumbinho/zumbinho_left_0.png', '../Projeto-IP/zumbinho/zumbinho_left_1.png', '../Projeto-IP/zumbinho/zumbinho_left_2.png'], 'right': ['../Projeto-IP/zumbinho/zumbinho_right_0.png', '../Projeto-IP/zumbinho/zumbinho_right_1.png', '../Projeto-IP/zumbinho/zumbinho_right_2.png'], 
                             'up_idle': ['../Projeto-IP/zumbinho/zumbinho_idle_up.png'], 'down_idle': ['../Projeto-IP/zumbinho/zumbinho_idle_down.png'], 
                             'left_idle': ['../Projeto-IP/zumbinho/zumbinho_idle_left.png'], 'right_idle': ['../Projeto-IP/zumbinho/zumbinho_idle_right.png']}
+      
             
     def animar(self):
+        #funcao utilizada para animacao
+        #selecao de qual lista de animacoes vai usar de acordo com o status
         animation = self.animations[self.status]
-        
+        #rodando a lista para mostar todas os sprites
         self.frame_index += self.animation_speed
         if self.frame_index >= len(animation):
             self.frame_index = 0
         
         self.image = pygame.image.load(animation[int(self.frame_index)]).convert_alpha()
     
+    
     def move(self,speed):
+        #funcao para atualizar a posicao da hitbox junto ao movimento do zumbi
         if self.direction.magnitude() != 0:
             self.direction = self.direction.normalize()
 
@@ -98,8 +107,10 @@ class Zumbi(pygame.sprite.Sprite):
 
     def collision(self,direction):
         global mortes
+        #colisoes
         if direction == 'horizontal':
             for sprite in self.obstacle_sprites:
+                #essa funcao faz com que o zumbi pare ao se chocar com a parede
                 if sprite.hitbox.colliderect(self.hitbox):
                     if self.direction.x > 0: # moving right
                         self.hitbox.right = sprite.hitbox.left
@@ -107,24 +118,28 @@ class Zumbi(pygame.sprite.Sprite):
                         self.hitbox.left = sprite.hitbox.right
 
             for sprite in self.colisao_player:
+                #essa funcao faz com que o zumbi cause dano ao jogador ao encostar nele
                 if sprite.hitbox.colliderect(self.hitbox):
                     self.player.vida -= 20
                     self.player.image = pygame.image.load(f'../Projeto-IP/prota/prota_dmg_{self.player.status}.png').convert_alpha()
+                    #o zumbi eh jogado pra tras quando bate no player para possibilitar fuga e evitar muitas batidas sucessivas
                     if self.direction.x > 0: # moving right
                       self.hitbox.x -= self.speed * 15
                     if self.direction.x < 0: # moving left
                        self.hitbox.x += self.speed * 15
             
             for sprite in self.player.bala:
+                #funcao para que o zumbi receba dano quando a bala se chocar contra ele
                 if sprite.hitbox.colliderect(self.hitbox):
                     if self.cooldown_dano >= 2:
                         self.hp -= self.player.dano
                         self.image = pygame.image.load(f'../Projeto-IP/{self.tipo_zumbi}/{self.tipo_zumbi}_dmg_{self.status}.png').convert_alpha()
                         self.cooldown_dano = 0
+                    #caso o hp do zumbi chegue a zero, ele morre
                     if self.hp <= 0:
                         self.kill()
                         self.mortes+=1
-
+        #basicamente as mesmas coisas de cima, mas para a vertical
         if direction == 'vertical':
             for sprite in self.obstacle_sprites:
                 if sprite.hitbox.colliderect(self.hitbox):
@@ -151,9 +166,15 @@ class Zumbi(pygame.sprite.Sprite):
                     if self.hp <= 0:
                         self.kill()
                         mortes+=1
+                        
+                        
     def count(self):
+        #funcao que retorna o numero de mortes
         return self.mortes
+    
+    
     def update(self):
+        #atualiza os dados do zumbi e os cooldowns
         if self.cooldown_dano < 2:
             self.cooldown_dano += 0.2
         self.zombie_move()
@@ -193,6 +214,7 @@ class UI():
         self.health_bar_rect = pygame.Rect(10,10,HEALTH_BAR_LARGURA,BAR_ALTURA)
         self.ammo_bar_rect = pygame.Rect(10,BAR_ALTURA+20,AMMO_BAR_LARGURA,BAR_ALTURA)
         
+        
     def show_bar(self,current,max_amount, bg_rect, color):
         #draw bg
         pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
@@ -206,6 +228,7 @@ class UI():
         #drawing the bar
         pygame.draw.rect(self.display_surface,color, current_rect)
         pygame.draw.rect(self.display_surface, UI_BORDER_COLOR, current_rect, 3)
+        
     
     def show_morte_zumbi(self, qtd_mortes):
         text_surf = self.font.render(str(int(qtd_mortes)),False,TEXT_COLOR)
@@ -214,6 +237,7 @@ class UI():
         
         pygame.draw.rect(self.display_surface,UI_BG_COLOR,text_rect.inflate(15,5))
         self.display_surface.blit(text_surf,text_rect)
+        
 
     def display(self,player):
         self.show_bar(self.player.vida, 100, self.health_bar_rect, HEALTH_COLOR)

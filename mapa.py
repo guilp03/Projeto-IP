@@ -2,7 +2,7 @@
 # game setup
 FPS      = 60
 TILESIZE = 64
-
+#esquema do mapa em matriz, sendo cada elemento representado por uma letra ou um conjunto de letras, as que possuem apenas ' ' sao espacos vazios
 WORLD_MAP = [
 ['x1','x2','x2','x2','x2','x2','x2','x2','x2','x2','x2','x2','x2','x2','x2','x2','x2','x2','x2','x'],
 ['x',' ','p',' ',' ','me',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','m','z','x'],

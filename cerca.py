@@ -1,6 +1,6 @@
 import pygame
 from mapa import *
-
+#define as classes para as cercas do jogo, que tambem atuam como barreiras
 class Cerca(pygame.sprite.Sprite):
     
     def __init__(self,pos,groups):
@@ -38,6 +38,7 @@ class Cerca3(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0, -10)
 
+
 class Cerca4(pygame.sprite.Sprite):
     
     def __init__(self,pos,groups):
@@ -45,6 +46,8 @@ class Cerca4(pygame.sprite.Sprite):
         self.image = pygame.image.load('cercas/cerca_botright.png').convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0, -10)
+  
+        
 class Cerca5(pygame.sprite.Sprite):
     
     def __init__(self,pos,groups):

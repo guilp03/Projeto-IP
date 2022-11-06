@@ -5,6 +5,7 @@ from mapa import *
 class Player(pygame.sprite.Sprite):
 	def __init__(self,pos,visible_sprites, colisao_player,obstacle_sprites, coletaveis, zumbi, bala):
 		super().__init__(visible_sprites, colisao_player)
+		#infos base do player
 		self.vida = 100
 		self.dano = 40
 		self.pente = 30
@@ -15,22 +16,25 @@ class Player(pygame.sprite.Sprite):
 		self.visible_sprites, self.colisao_player = visible_sprites, colisao_player
 		self.direction = pygame.math.Vector2()
 		self.speed = 6
-
+		#status que definem se o player esta armado e pra onde se movimenta
 		self.arma = 'nada'
 		self.status = 'down'
+		#infos que compoem a animacao
 		self.frame_index = 0
 		self.animation_speed = 0.2
-
+		#grupos de colisao
 		self.coletaveis = coletaveis
 		self.obstacle_sprites = obstacle_sprites
 		self.zumbi = zumbi
 		self.bala = bala
-
+		#tempos de spawn dos coletaveis
 		self.cooldown_spawn_medkit = 0
 		self.cooldown_spawn_ammo = 0
 		self.cooldown_pot = 0
 
 	def input(self):
+		#discriminamos as teclas nessa funcao
+		#o status do player precisa ser atualizado para a animacao
 		keys = pygame.key.get_pressed()
 		if keys[pygame.K_w] and keys[pygame.K_s]:
 			self.direction.y = 0
@@ -53,7 +57,7 @@ class Player(pygame.sprite.Sprite):
 			self.status = 'right'
 		else:
 			self.direction.x = 0
-
+		#para atirar o jogador precisa tem municao no pente e deve respeitar a cadencia da arma, que colocamos como 1 tiro a cada 0,5seg
 		if keys[pygame.K_p] and self.cooldown_tiro == 30 and self.arma == 'pistol' and self.pente>0:
 			self.cooldown_tiro = 0
 			self.pente-=1
@@ -61,11 +65,13 @@ class Player(pygame.sprite.Sprite):
 		
 
 	def get_status(self):
+     #diferenciar o player parado de quando esta andando
 		if self.direction.x == 0 and self.direction.y == 0:
 			if not 'idle' in self.status:
 				self.status = self.status + '_idle'
 
 	def importar(self):
+     #diferenciar sprites do player desarmado e armado
 		if self.arma == 'nada':
 			self.animations = {'up': ['../Projeto-IP/prota/prota_up_0.png', '../Projeto-IP/prota/prota_up_1.png', '../Projeto-IP/prota/prota_up_2.png'],
 								'down': ['../Projeto-IP/prota/prota_down_0.png', '../Projeto-IP/prota/prota_down_1.png', '../Projeto-IP/prota/prota_down_2.png'],
@@ -82,8 +88,9 @@ class Player(pygame.sprite.Sprite):
 								'left_idle': ['../Projeto-IP/prota_pistol/prota_pistol_left_1.png'], 'right_idle': ['../Projeto-IP/prota_pistol/prota_pistol_right_1.png']} 
 	
 	def animar(self):
+     #a funcao seleciona a lista de sprites a ser usada de acordo com o status do player
 		animation = self.animations[self.status]
-
+	#roda as listas para animar o jogador
 		self.frame_index += self.animation_speed
 		if self.frame_index >= len(animation):
 			self.frame_index = 0
@@ -91,6 +98,7 @@ class Player(pygame.sprite.Sprite):
 		self.image = pygame.image.load(animation[int(self.frame_index)]).convert_alpha()
 
 	def move(self,speed):
+     #atualiza a posicao da hitbox
 		if self.direction.magnitude() != 0:
 			self.direction = self.direction.normalize()
 
@@ -105,26 +113,30 @@ class Player(pygame.sprite.Sprite):
 		if direction == 'horizontal':
 			for sprite in self.obstacle_sprites:
 				if sprite in self.coletaveis and sprite.hitbox.colliderect(self.hitbox):
+        #caso o jogador colida com os coletaveis, eles serao apagados e acontecera o efeito conforme o coletavel
 					if sprite.nome == 'medkit':
 						sprite.kill()
 						self.cooldown_spawn_medkit = 0
+						#medkit recupera vida
 						if self.vida <= 75:
 							self.vida += 25
 						elif self.vida >= 75 and self.vida <= 100:
 							self.vida += (100 - self.vida)
-
+					#municao recarrega o pente
 					if sprite.nome == 'ammo':
 						sprite.kill()
 						self.pente = 30
-      
+					#A pocao da dano bonus
 					if sprite.nome == 'pocao':
 						sprite.kill()
 						self.dano == self.dano + 10
+					#a pistola arma o jogador
 					if sprite.nome == 'pistol':
 						sprite.kill()
 						self.arma = 'pistol'
-      
+				
 				elif sprite.hitbox.colliderect(self.hitbox) and sprite not in self.coletaveis :
+				#o jogador para ao encostar em paredes
 					if self.direction.x > 0: # moving right
 						self.hitbox.right = sprite.hitbox.left
 					if self.direction.x < 0: # moving left
@@ -132,11 +144,12 @@ class Player(pygame.sprite.Sprite):
 			
 			for sprite in self.zumbi:
 				if sprite.hitbox.colliderect(self.hitbox):
+				#o jogador tambem pode ser bloqueado por zumbis
 					if self.direction.x > 0: # moving right
 							self.hitbox.right = sprite.hitbox.left
 					if self.direction.x < 0: # moving left
 						self.hitbox.left = sprite.hitbox.right
-
+		#os mesmos comandos para a vertical
 		if direction == 'vertical':
 			for sprite in self.obstacle_sprites:
 				if sprite in self.coletaveis and sprite.hitbox.colliderect(self.hitbox):
@@ -174,6 +187,7 @@ class Player(pygame.sprite.Sprite):
 
 
 	def update(self):
+     #atualiza os dados
 		from level import Level
 		self.input()
 		self.importar()
@@ -188,6 +202,7 @@ class Player(pygame.sprite.Sprite):
 			self.cooldown_spawn_ammo += 1
 		if self.cooldown_pot < 3600:
 			self.cooldown_pot += 1
+		#aqui chamamos as funcoes que estao em level para fazer os coletaveis reaparecerem
 		if self.cooldown_spawn_medkit == 1800:
 			Level.spawn_coletaveis(self.visible_sprites, self.obstacle_sprites, self.coletaveis, self.cooldown_spawn_medkit,self.cooldown_spawn_ammo,self.cooldown_pot)
 			self.cooldown_spawn_medkit = 0
