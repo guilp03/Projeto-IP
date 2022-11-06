@@ -1,4 +1,3 @@
-
 import pygame 
 from mapa import *
 from tile import Tile
@@ -9,13 +8,16 @@ from coletaveis import Ammo
 from coletaveis import Pocao
 from coletaveis import Pistol
 from random import randint
-from ui import UI
+from zumbi import UI
 import constru
 import cerca
 
 class Level:
 	def __init__(self):
+		self.hordas = 1
 		self.cooldown = 0
+		self.time = 0
+		self.first_spawn = True
 		# get the display surface 
 		self.display_surface = pygame.display.get_surface()
 
@@ -29,7 +31,7 @@ class Level:
 
 		# sprite setup
 		self.create_map()
-		self.ui = UI(self.player)
+		self.ui = zumbi.UI(self.player)
 
 	def create_map(self):
 		for row_index,row in enumerate(WORLD_MAP):
@@ -44,8 +46,6 @@ class Level:
 					cerca.Cerca2((x,y),[self.visible_sprites,self.obstacle_sprites])
 				if col == 'p':
 					self.player = Player((x,y),self.visible_sprites, self.colisao_player,self.obstacle_sprites, self.coletaveis, self.colisao_zumbi, self.bala)
-				if col == 'z':
-					self.zumbi = zumbi.Zumbi('boomer',(x,y),[self.visible_sprites, self.colisao_zumbi],self.player,self.obstacle_sprites, self.colisao_player)
 				if col == 'me':
 					Coletaveis((x,y),'medkit',self.visible_sprites, self.coletaveis, self.obstacle_sprites )
 				if col == 'mu':
@@ -95,9 +95,51 @@ class Level:
 					y = row_index * TILESIZE
 					if col == 'pot':
 						Pocao((x,y), 'pocao', visible_sprites, coletaveis, obstacle_sprites )
+	def spawn_zombies(self):
+		lista_aux= []
+		lista_zumbi = ['normal', 'zumbinho', 'boomer']
+		if self.time >= 600 and self.first_spawn == True:
+			for row_index,row in enumerate(WORLD_MAP):
+					for col_index, col in enumerate(row):
+						x = col_index * TILESIZE
+						y = row_index * TILESIZE
+						if col == 'z':
+							lista_aux.append((x,y))
+			for i in range(0, self.hordas * 3):
+				numero = randint(0, len(lista_aux) -1 )
+				pos = lista_aux[numero]
+				aux = randint(0, 2)
+				tipo_zumbi = lista_zumbi[aux]
+				self.zumbi = zumbi.Zumbi(f'{tipo_zumbi}',pos,[self.visible_sprites, self.colisao_zumbi],self.player,self.obstacle_sprites, self.colisao_player)
+			self.time = 0
+			self.hordas += 1
+			self.first_spawn = False
+		elif self.time >= 1800 + self.cooldown:
+			for row_index,row in enumerate(WORLD_MAP):
+					for col_index, col in enumerate(row):
+						x = col_index * TILESIZE
+						y = row_index * TILESIZE
+						if col == 'z':
+							lista_aux.append((x,y))
+			print(lista_aux)
+			for i in range(0, self.hordas * 3):
+				numero = randint(0, len(lista_aux) -1 )
+				pos = lista_aux[numero]
+				aux = randint(0, 2)
+				tipo_zumbi = lista_zumbi[aux]
+				self.zumbi = zumbi.Zumbi(f'{tipo_zumbi}',pos,[self.visible_sprites, self.colisao_zumbi],self.player,self.obstacle_sprites, self.colisao_player)
+						
+			self.time = 0
+			self.hordas += 1
+			self.cooldown += 100
+					
 
 	def run(self):
 		# update and draw the game
+		self.time += 1
+		self.spawn_zombies()
+		if self.time % 100 == 0:
+			print(self.time)
 		self.visible_sprites.custom_draw(self.player)
 		self.visible_sprites.update()
 		self.ui.display(self.player)

@@ -5,9 +5,9 @@ from mapa import *
 class Player(pygame.sprite.Sprite):
 	def __init__(self,pos,visible_sprites, colisao_player,obstacle_sprites, coletaveis, zumbi, bala):
 		super().__init__(visible_sprites, colisao_player)
-		self.vida = 80
+		self.vida = 100
 		self.dano = 40
-		self.pente = 50
+		self.pente = 30
 		self.image = pygame.image.load('../Projeto-IP/prota/prota_idle_down.png').convert_alpha()
 		self.rect = self.image.get_rect(topleft = pos)
 		self.hitbox = self.rect.inflate(0, -10)
@@ -115,11 +115,11 @@ class Player(pygame.sprite.Sprite):
 
 					if sprite.nome == 'ammo':
 						sprite.kill()
-						self.ammo = 50
+						self.pente = 30
       
 					if sprite.nome == 'pocao':
 						sprite.kill()
-						self.dano == self.dano*2
+						self.dano == self.dano + 10
 					if sprite.nome == 'pistol':
 						sprite.kill()
 						self.arma = 'pistol'
@@ -150,11 +150,11 @@ class Player(pygame.sprite.Sprite):
 
 					if sprite.nome == 'ammo':
 						sprite.kill()
-						self.pente = 50
+						self.pente = 30
 
 					if sprite.nome == 'pocao':
 						sprite.kill()
-						self.dano == self.dano*2
+						self.dano == self.dano + 10
 					if sprite.nome == 'pistol':
 						sprite.kill()
 						self.arma = 'pistol'

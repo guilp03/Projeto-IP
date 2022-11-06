@@ -22,7 +22,7 @@ class Game:
 		return texto_formatado
 
 	def mostrar_tela_start(self):
-		self.screen.fill('#FFFFFF')
+		self.screen.fill('#000000')
 		self.exibe_mensagem('Pressione qualquer tecla', 40, '#ff0000', 640, 300)
 		pygame.display.flip()
 		self.espera()
@@ -63,6 +63,5 @@ class Game:
 
 if __name__ == '__main__':
 	game = Game()
-	
 	game.mostrar_tela_start()
 	game.run()
