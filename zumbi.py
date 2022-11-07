@@ -232,8 +232,8 @@ class UI():
     
     def show_morte_zumbi(self, qtd_mortes):
         text_surf = self.font.render(str(int(qtd_mortes)),False,TEXT_COLOR)
-        x, y = 40, 2 * BAR_ALTURA + 50
-        text_rect = text_surf.get_rect(bottomright = (x,y))
+        x, y = 640, 20
+        text_rect = text_surf.get_rect(midtop = (x,y))
         
         pygame.draw.rect(self.display_surface,UI_BG_COLOR,text_rect.inflate(15,5))
         self.display_surface.blit(text_surf,text_rect)
