@@ -7,7 +7,7 @@ class Game:
 		# general setup
 		pygame.init()
 		self.screen = pygame.display.set_mode((1280,720))
-		pygame.display.set_caption('Super Mario Borba')
+		pygame.display.set_caption('Regular Zombie Game')
 		self.clock = pygame.time.Clock()
 
 		self.level = Level()

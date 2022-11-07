@@ -133,7 +133,7 @@ class Level:
 			self.hordas += 1
 			self.first_spawn = False
    #os nascimentos subsequentes sao feitos a cada 30 segundos, sempre adicionando mais 5 segundos de intervalo para o jogador ter mais tempo de matar os zumbis
-		elif self.time >= 1800 + self.cooldown:
+		elif self.time >= 1800:
 			for row_index,row in enumerate(WORLD_MAP):
 					for col_index, col in enumerate(row):
 						x = col_index * TILESIZE
@@ -150,7 +150,6 @@ class Level:
 	#time diz respeito ao tempo passado desde o ultimo nascimento, hordas ao numero de nascimentos ja feitos(isso define quantos zumbis vao spawnar) e cooldown serve para aumentar o intervaloe entre nascimentos			
 			self.time = 0
 			self.hordas += 1
-			self.cooldown += 300
 					
 
 	def run(self):
