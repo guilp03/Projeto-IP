@@ -162,27 +162,40 @@ class Level:
 
 
 class CameraGroup(pygame.sprite.Group):
-    def __init__(self):
-        super().__init__()
-        self.display_surface = pygame.display.get_surface()
-        self.half_width = self.display_surface.get_size()[0] // 2
-        self.half_height = self.display_surface.get_size()[1] // 2
-        self.offset = pygame.math.Vector2()
+	def __init__(self):
+		super().__init__()
+		self.display_surface = pygame.display.get_surface()
+		self.half_width = self.display_surface.get_size()[0] // 2
+		self.half_height = self.display_surface.get_size()[1] // 2
+		self.offset = pygame.math.Vector2()
 		#parte do chao esta funcionando agr so falta a imagem certa
 		#criando o chao
-        self.floor_surf = pygame.image.load('map_IP_cop.png')
-        self.floor_rect = self.floor_surf.get_rect(topleft=(-850,-550))
-		
+		self.floor_surf = pygame.image.load('map_IP_cop.png')
+		self.floor_rect = self.floor_surf.get_rect(topleft=(-850,-550))
 
-    def custom_draw(self,player):
-        self.offset.x = player.rect.centerx - self.half_width
-        self.offset.y = player.rect.centery - self.half_height
+		self.zoom_scale = 1
+		self.internal_surface_size = (2500, 2500)
+		self.internal_surf = pygame.Surface(self.internal_surface_size, pygame.SRCALPHA)
+		self.internal_rect = self.internal_surf.get_rect(center = (self.half_width, self.half_height))
+		self.internal_surf_size_vector = pygame.math.Vector2(self.internal_surface_size)
+		self.internal_offset = pygame.math.Vector2()
+		self.internal_offset.x = self.internal_surface_size[1] // 2 - self.half_width
+		self.internal_offset.y = self.internal_surface_size[1] // 2 - self.half_height
+
+
+	def custom_draw(self, player):
+		self.internal_surf.fill('black')
+		self.offset.x = player.rect.centerx - self.half_width
+		self.offset.y = player.rect.centery - self.half_height
 		#desenhando o chao
-        self.floor_offset_pos = self.floor_rect.topleft - self.offset
-        self.display_surface.blit(self.floor_surf, self.floor_offset_pos)
-		
+		self.floor_offset_pos = self.floor_rect.topleft - self.offset
+		self.internal_surf.blit(self.floor_surf, self.floor_offset_pos)
 		
         # for sprite in self.sprites():
-        for sprite in sorted(self.sprites(),key = lambda sprite: sprite.rect.centery):
-            offset_pos = sprite.rect.topleft - self.offset
-            self.display_surface.blit(sprite.image,offset_pos)
+		for sprite in sorted(self.sprites(),key = lambda sprite: sprite.rect.centery):
+			offset_pos = sprite.rect.topleft - self.offset + self.internal_offset
+			self.internal_surf.blit(sprite.image,offset_pos)
+		
+		scaled_surf = pygame.transform.scale(self.internal_surf, self.internal_surf_size_vector * self.zoom_scale)
+		scaled_rect = scaled_surf.get_rect(center = (self.half_width, self.half_height))
+		self.display_surface.blit(scaled_surf, scaled_rect)
