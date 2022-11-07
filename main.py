@@ -14,7 +14,7 @@ class Game:
 
 
 	def exibe_mensagem (self, texto, tamanho, cor, x, y):
-		fonte = pygame.font.Font('../PROJETO-IP/HUD/font/UpheavalPro.ttf', tamanho)
+		fonte = pygame.font.Font('HUD/font/UpheavalPro.ttf', tamanho)
 		mensagem = f'{texto}'
 		texto_formatado = fonte.render(mensagem, True, cor)
 		#retângulo para a "caixa de texto"

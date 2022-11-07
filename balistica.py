@@ -7,7 +7,7 @@ class DisparoArma(pygame.sprite.Sprite):
     def __init__(self, pos, groups, obstacle_sprites, status, colisao_zumbi):
         super().__init__(groups)
         #infos basicas do projetil
-        self.image = pygame.image.load('../Projeto-IP/tiro/tiro_right.png').convert_alpha()
+        self.image = pygame.image.load('tiro/tiro_right.png').convert_alpha()
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(0,0)
         self.direction = pygame.math.Vector2()
@@ -17,12 +17,12 @@ class DisparoArma(pygame.sprite.Sprite):
         self.zumbi = colisao_zumbi
         self.index = 0
         self.animation_speed = 0.2
-        self.animations = {'up': ['../Projeto-IP/tiro/tiro3_up.png', '../Projeto-IP/tiro/tiro4_up.png'],
-							'down': ['../Projeto-IP/tiro/tiro3_down.png', '../Projeto-IP/tiro/tiro4_down.png'],
-							'left': ['../Projeto-IP/tiro/tiro3_left.png', '../Projeto-IP/tiro/tiro4_left.png'],
-							'right': ['../Projeto-IP/tiro/tiro3_right.png', '../Projeto-IP/tiro/tiro4_right.png'],
-							'up_idle': ['../Projeto-IP/tiro/tiro3_up.png', '../Projeto-IP/tiro/tiro4_up.png'], 'down_idle': ['../Projeto-IP/tiro/tiro3_down.png', '../Projeto-IP/tiro/tiro4_down.png'],
-							'left_idle': ['../Projeto-IP/tiro/tiro3_left.png', '../Projeto-IP/tiro/tiro4_left.png'], 'right_idle': ['../Projeto-IP/tiro/tiro3_right.png', '../Projeto-IP/tiro/tiro4_right.png']}
+        self.animations = {'up': ['tiro/tiro3_up.png', 'tiro/tiro4_up.png'],
+							'down': ['tiro/tiro3_down.png', 'tiro/tiro4_down.png'],
+							'left': ['tiro/tiro3_left.png', 'tiro/tiro4_left.png'],
+							'right': ['tiro/tiro3_right.png', 'tiro/tiro4_right.png'],
+							'up_idle': ['tiro/tiro3_up.png', 'tiro/tiro4_up.png'], 'down_idle': ['tiro/tiro3_down.png', 'tiro/tiro4_down.png'],
+							'left_idle': ['tiro/tiro3_left.png', 'tiro/tiro4_left.png'], 'right_idle': ['tiro/tiro3_right.png', 'tiro/tiro4_right.png']}
         self.count = False
 
 
@@ -30,16 +30,16 @@ class DisparoArma(pygame.sprite.Sprite):
         #define a direcao do projetil
         if self.sentido == 'up' or self.sentido == 'up_idle':
             self.direction.y = -1
-            self.image = pygame.image.load('../Projeto-IP/tiro/tiro2_up.png').convert_alpha()
+            self.image = pygame.image.load('tiro/tiro2_up.png').convert_alpha()
         elif self.sentido == 'down' or self.sentido == 'down_idle':
             self.direction.y = 1
-            self.image = pygame.image.load('../Projeto-IP/tiro/tiro2_down.png').convert_alpha()
+            self.image = pygame.image.load('tiro/tiro2_down.png').convert_alpha()
         elif self.sentido == 'left' or self.sentido == 'left_idle':
             self.direction.x = -1
-            self.image = pygame.image.load('../Projeto-IP/tiro/tiro2_left.png').convert_alpha()
+            self.image = pygame.image.load('tiro/tiro2_left.png').convert_alpha()
         elif self.sentido == 'right' or self.sentido == 'right_idle':
             self.direction.x = 1
-            self.image = pygame.image.load('../Projeto-IP/tiro/tiro2_right.png').convert_alpha()
+            self.image = pygame.image.load('tiro/tiro2_right.png').convert_alpha()
 
 
     def move(self,speed):

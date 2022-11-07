@@ -8,7 +8,7 @@ class Coletaveis(pygame.sprite.Sprite):
         super().__init__(group, coletaveis, obstacle_sprites)
         # Determinando sprite
         self.nome = nome
-        self.image = pygame.image.load('../Projeto-IP/coletaveis/medkit.png').convert_alpha()
+        self.image = pygame.image.load('coletaveis/medkit.png').convert_alpha()
         # Determinando posição inicial
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0,0)
@@ -21,7 +21,7 @@ class Ammo(pygame.sprite.Sprite):
         super().__init__(group, coletaveis, obstacle_sprites)
         # Determinando sprite
         self.nome = nome
-        self.image = pygame.image.load('../Projeto-IP/coletaveis/municao.png').convert_alpha()
+        self.image = pygame.image.load('coletaveis/municao.png').convert_alpha()
         # Determinando posição inicial
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0,0)
@@ -34,7 +34,7 @@ class Pocao(pygame.sprite.Sprite):
         super().__init__(group, coletaveis, obstacle_sprites)
         # Determinando sprite
         self.nome = nome
-        self.image = pygame.image.load('../Projeto-IP/coletaveis/poção.png').convert_alpha()
+        self.image = pygame.image.load('coletaveis/poção.png').convert_alpha()
         # Determinando posição inicial
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0,0)
@@ -47,7 +47,7 @@ class Pistol(pygame.sprite.Sprite):
         super().__init__(group, coletaveis, obstacle_sprites)
         # Determinando sprite
         self.nome = nome
-        self.image = pygame.image.load('../Projeto-IP/coletaveis/pistol.png').convert_alpha()
+        self.image = pygame.image.load('coletaveis/pistol.png').convert_alpha()
         # Determinando posição inicial
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0,0)

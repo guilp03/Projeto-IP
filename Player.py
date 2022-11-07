@@ -9,7 +9,7 @@ class Player(pygame.sprite.Sprite):
 		self.vida = 100
 		self.dano = 40
 		self.pente = 30
-		self.image = pygame.image.load('../Projeto-IP/prota/prota_idle_down.png').convert_alpha()
+		self.image = pygame.image.load('prota/prota_idle_down.png').convert_alpha()
 		self.rect = self.image.get_rect(topleft = pos)
 		self.hitbox = self.rect.inflate(0, -10)
 		self.cooldown_tiro = 30
@@ -73,19 +73,19 @@ class Player(pygame.sprite.Sprite):
 	def importar(self):
      #diferenciar sprites do player desarmado e armado
 		if self.arma == 'nada':
-			self.animations = {'up': ['../Projeto-IP/prota/prota_up_0.png', '../Projeto-IP/prota/prota_up_1.png', '../Projeto-IP/prota/prota_up_2.png'],
-								'down': ['../Projeto-IP/prota/prota_down_0.png', '../Projeto-IP/prota/prota_down_1.png', '../Projeto-IP/prota/prota_down_2.png'],
-								'left': ['../Projeto-IP/prota/prota_left_0.png', '../Projeto-IP/prota/prota_left_1.png', '../Projeto-IP/prota/prota_left_2.png'],
-								'right': ['../Projeto-IP/prota/prota_right_0.png', '../Projeto-IP/prota/prota_right_1.png', '../Projeto-IP/prota/prota_right_2.png'],
-								'up_idle': ['../Projeto-IP/prota/prota_idle_up.png'], 'down_idle': ['../Projeto-IP/prota/prota_idle_down.png'],
-								'left_idle': ['../Projeto-IP/prota/prota_idle_left.png'], 'right_idle': ['../Projeto-IP/prota/prota_idle_right.png']}
+			self.animations = {'up': ['prota/prota_up_0.png', 'prota/prota_up_1.png', 'prota/prota_up_2.png'],
+								'down': ['prota/prota_down_0.png', 'prota/prota_down_1.png', 'prota/prota_down_2.png'],
+								'left': ['prota/prota_left_0.png', 'prota/prota_left_1.png', 'prota/prota_left_2.png'],
+								'right': ['prota/prota_right_0.png', 'prota/prota_right_1.png', 'prota/prota_right_2.png'],
+								'up_idle': ['prota/prota_idle_up.png'], 'down_idle': ['prota/prota_idle_down.png'],
+								'left_idle': ['prota/prota_idle_left.png'], 'right_idle': ['prota/prota_idle_right.png']}
 		elif self.arma == 'pistol':
-			self.animations = {'up': ['../Projeto-IP/prota_pistol/prota_pistol_up_1.png', '../Projeto-IP/prota_pistol/prota_pistol_up_2.png', '../Projeto-IP/prota_pistol/prota_pistol_up_3.png'],
-								'down': ['../Projeto-IP/prota_pistol/prota_pistol_down_1.png', '../Projeto-IP/prota_pistol/prota_pistol_down_2.png', '../Projeto-IP/prota_pistol/prota_pistol_down_3.png'],
-								'left': ['../Projeto-IP/prota_pistol/prota_pistol_left_1.png', '../Projeto-IP/prota_pistol/prota_pistol_left_2.png', '../Projeto-IP/prota_pistol/prota_pistol_left_3.png'],
-								'right': ['../Projeto-IP/prota_pistol/prota_pistol_right_1.png', '../Projeto-IP/prota_pistol/prota_pistol_right_2.png', '../Projeto-IP/prota_pistol/prota_pistol_right_3.png'],
-								'up_idle': ['../Projeto-IP/prota_pistol/prota_pistol_up_1.png'], 'down_idle': ['../Projeto-IP/prota_pistol/prota_pistol_down_1.png'],
-								'left_idle': ['../Projeto-IP/prota_pistol/prota_pistol_left_1.png'], 'right_idle': ['../Projeto-IP/prota_pistol/prota_pistol_right_1.png']} 
+			self.animations = {'up': ['prota_pistol/prota_pistol_up_1.png', 'prota_pistol/prota_pistol_up_2.png', 'prota_pistol/prota_pistol_up_3.png'],
+								'down': ['prota_pistol/prota_pistol_down_1.png', 'prota_pistol/prota_pistol_down_2.png', 'prota_pistol/prota_pistol_down_3.png'],
+								'left': ['prota_pistol/prota_pistol_left_1.png', 'prota_pistol/prota_pistol_left_2.png', 'prota_pistol/prota_pistol_left_3.png'],
+								'right': ['prota_pistol/prota_pistol_right_1.png', 'prota_pistol/prota_pistol_right_2.png', 'prota_pistol/prota_pistol_right_3.png'],
+								'up_idle': ['prota_pistol/prota_pistol_up_1.png'], 'down_idle': ['prota_pistol/prota_pistol_down_1.png'],
+								'left_idle': ['prota_pistol/prota_pistol_left_1.png'], 'right_idle': ['prota_pistol/prota_pistol_right_1.png']} 
 	
 	def animar(self):
      #a funcao seleciona a lista de sprites a ser usada de acordo com o status do player
