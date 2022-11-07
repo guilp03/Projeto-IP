@@ -7,6 +7,8 @@ class Game:
 		# general setup
 		pygame.init()
 		self.screen = pygame.display.set_mode((1280,720))
+		icone = pygame.image.load('boomer/boomer_right_0.png')
+		pygame.display.set_icon(icone)
 		pygame.display.set_caption('Regular Zombie Game')
 		self.clock = pygame.time.Clock()
 
