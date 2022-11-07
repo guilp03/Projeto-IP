@@ -174,7 +174,7 @@ class CameraGroup(pygame.sprite.Group):
 		self.floor_rect = self.floor_surf.get_rect(topleft=(-850,-550))
 
 		self.zoom_scale = 1
-		self.internal_surface_size = (2500, 2500)
+		self.internal_surface_size = (1280, 1280)
 		self.internal_surf = pygame.Surface(self.internal_surface_size, pygame.SRCALPHA)
 		self.internal_rect = self.internal_surf.get_rect(center = (self.half_width, self.half_height))
 		self.internal_surf_size_vector = pygame.math.Vector2(self.internal_surface_size)
@@ -182,8 +182,17 @@ class CameraGroup(pygame.sprite.Group):
 		self.internal_offset.x = self.internal_surface_size[1] // 2 - self.half_width
 		self.internal_offset.y = self.internal_surface_size[1] // 2 - self.half_height
 
+	
+	def zoom_input(self):
+		keys = pygame.key.get_pressed()
+		if keys[pygame.K_q] and self.zoom_scale < 1.8:
+			self.zoom_scale += 0.1
+		if keys[pygame.K_e] and self.zoom_scale > 1:
+			self.zoom_scale -= 0.1
+
 
 	def custom_draw(self, player):
+		self.zoom_input()
 		self.internal_surf.fill('black')
 		self.offset.x = player.rect.centerx - self.half_width
 		self.offset.y = player.rect.centery - self.half_height
